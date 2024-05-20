@@ -1,0 +1,2652 @@
+<svg version="1.1" baseProfile="full" width="25390.0" height="1489.0" viewbox="0 0 25390 1489" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+#.type: fill=lightgray
+[Agent||+onRefresh(): void;+onStateChange(): void;+onRoutable(): void;+onNotRoutable(): void;+onOffline(): void;+onError(): void;+onWebSocketConnectionLost(): void;+onWebSocketConnectionGained(): void;+onSoftphoneError(): void;+onAfterCallWork(): void;+onWebSocketConnectionLost(): void;+getAvailabilityState(): AgentAvailabilityState;+getState(): AgentState;+getStatus(): AgentState;+getNextState(): AgentState;+getStateDuration(): number;+getPermissions(): string\[\];+getContacts(): Contact\[\];+getConfiguration(): AgentConfiguration;+getAgentStates(): AgentStateDefinition\[\];+getRoutingProfile(): AgentRoutingProfile;+getChannelConcurrency(): AgentChannelConcurrencyMap;+getChannelConcurrency(): number;+getAgentARN(): string;+getName(): string;+getExtension(): string;+getDialableCountries(): string\[\];+isSoftphoneEnabled(): boolean;+setConfiguration(): void;+setState(): void;+createTask(): void;+setStatus(): void;+connect(): void;+getAllQueueARNs(): string\[\];+getEndpoints(): void;+toSnapshot(): Agent;+mute(): void;+unmute(): void;+setSpeakerDevice(): void;+setMicrophoneDevice(): void;+setRingerDevice(): void;+setCameraDevice(): void;+setBackgroundBlur(): void;+onMuteToggle(): void;+connect(): void;+onSpeakerDeviceChanged(): void;+onMicrophoneDeviceChanged(): void;+onRingerDeviceChanged(): void;+onCameraDeviceChanged(): void;+onBackgroundBlurChanged(): void;+onEnqueuedNextState(): void]
+[Contact|+contactId: string|+onRefresh(): void;+onIncoming(): void;+onPending(): void;+onConnecting(): void;+onAccepted(): void;+onMissed(): void;+onEnded(): void;+onDestroy(): void;+onACW(): void;+onConnected(): void;+onError(): void;+getEventName(): string;+getContactId(): string;+getOriginalContactId(): string;+getInitialContactId(): string;+getType(): ContactType;+getState(): ContactState;+getStatus(): ContactState;+getName(): string;+getDescription(): string;+getReferences(): ReferenceDictionary;+getStateDuration(): number;+getStatusDuration(): number;+getQueue(): Queue;+getQueueTimestamp(): Date;+getConnections(): BaseConnection\[\];+getInitialConnection(): BaseConnection;+getActiveInitialConnection(): BaseConnection \| null;+getThirdPartyConnections(): BaseConnection\[\];+getSingleActiveThirdPartyConnection(): BaseConnection \| null;+getAgentConnection(): BaseConnection;+getActiveConnections(): BaseConnection\[\];+hasTwoActiveParticipants(): boolean;+getAttributes(): AttributeDictionary;+getChannelContext(): ChannelContext \| undefined;+getSegmentAttributes(): SegmentAttributeDictionary;+getContactSubtype(): string \| null;+isSoftphoneCall(): boolean;+hasVideoRTCCapabilities(): boolean;+canAgentSendVideo(): boolean;+canAgentReceiveVideo(): boolean;+isInbound(): boolean;+isConnected(): boolean;+accept(): void;+pause(): void;+resume(): void;+destroy(): void;+reject(): void;+clear(): void;+complete(): void;+notifyIssue(): void;+addConnection(): void;+toggleActiveConnections(): void;+conferenceConnections(): void;+toSnapshot(): Contact;+isMultiPartyConferenceEnabled(): boolean;+isUnderSupervision(): boolean;+updateMonitorParticipantState(): void;+silentMonitor(): void;+bargeIn(): void]
+[QuickResponses||+static isEnabled(): Promise&lt;boolean&gt;;+static searchQuickResponses(): Promise&lt;SearchQuickResponsesResult&gt;]
+[Endpoint|+endpointARN: string;+endpointId: string;+type: EndpointType;+name: string;+phoneNumber: string;+agentLogin: string;+queue: string|+static byPhoneNumber(): Endpoint]
+[SoftphoneError|+errorType: string;+errorMessage: string;+endPointUrl: string|+getErrorType(): string;+getErrorMessage(): string;+getEndPointUrl(): string]
+[BaseConnection|+contactId: string;+connectionId: string|+getContactId(): string;+getConnectionId(): string;+getEndpoint(): Endpoint;+getAddress(): Endpoint;+getState(): ConnectionState;+getStatus(): ConnectionState;+getStateDuration(): number;+getStatusDuration(): number;+getType(): ConnectionType;+getMonitorInfo(): MonitorInfo \| null;+isInitialConnection(): boolean;+isActive(): boolean;+isConnected(): boolean;+isConnecting(): boolean;+isOnHold(): boolean;+destroy(): void;+sendDigits(): void;+hold(): void;+resume(): void]
+[VoiceConnection||+getMediaInfo(): VoiceMediaInfo;+getMediaType(): MediaType.SOFTPHONE;+getMediaController(): Promise&lt;any&gt;;+getVoiceIdSpeakerId(): Promise&lt;any&gt;;+getVoiceIdSpeakerStatus(): Promise&lt;any&gt;;+optOutVoiceIdSpeaker(): Promise&lt;any&gt;;+evaluateSpeakerWithVoiceId(): Promise&lt;any&gt;;+enrollSpeakerInVoiceId(): Promise&lt;any&gt;;+updateVoiceIdSpeakerId(): Promise&lt;any&gt;;+deleteVoiceIdSpeakerId(): Promise&lt;any&gt;;+getQuickConnectName(): string \| null;+isMute(): boolean;+muteParticipant(): void;+unmuteParticipant(): void;+canSendVideo(): boolean;+getCapabilities(): CapabilitiesDictionary;+getVideoConnectionInfo(): Promise&lt;any&gt;;+isSilentMonitor(): boolean;+isBarge(): boolean;+isSilentMonitorEnabled(): boolean;+isBargeEnabled(): boolean;+getMonitorCapabilities(): MonitoringMode\[\] \| undefined;+getMonitorStatus(): MonitoringMode \| null;+isForcedMute(): boolean]
+[ChatConnection||+getMediaInfo(): ChatMediaInfo;+getConnectionToken(): Promise&lt;ConnectionToken&gt;;+getMediaType(): MediaType.CHAT;+getMediaController(): Promise&lt;any&gt;;+isSilentMonitor(): boolean;+isBarge(): boolean;+isSilentMonitorEnabled(): boolean;+isBargeEnabled(): boolean;+getMonitorCapabilities(): MonitoringMode\[\];+getMonitorStatus(): MonitoringMode]
+[TaskConnection||+getMediaInfo(): TaskMediaInfo;+getMediaType(): MediaType.TASK;+getMediaController(): Promise&lt;any&gt;]
+[&lt;interface&gt;StorageAccessCallbacks|+onInit?: StorageAccessCallback;+onRequest?: StorageAccessCallback;+onDeny?: StorageAccessCallback;+onGrant?: StorageAccessCallback|]
+[&lt;interface&gt;StorageAccess||+onRequest(): { unsubscribe: Function; }]
+[&lt;interface&gt;Core|+upstream?: object \| null|+initCCP(): void;+onAuthorizeSuccess(): void;+onIframeRetriesExhausted(): void;+onCTIAuthorizeRetriesExhausted(): void;+onAuthorizeRetriesExhausted(): void;+terminate(): void;+viewContact(): void;+onViewContact(): void;+onAuthFail(): void;+onAccessDenied(): void;+getWebSocketManager(): any;+onInitialized(): void;+getFrameMediaDevices(): Promise&lt;any\[\]&gt;]
+[&lt;interface&gt;AgentApp|+AppRegistry: AppRegistry|+initCCP(): void;+initAppCommunication(): void;+initApp(): void;+stopApp(): void]
+[&lt;interface&gt;AppOptions|+ccpParams?: OptionalInitCCPOptions;+customViewsParams?: OptionalCustomViewsOptions;+style?: string|]
+[&lt;interface&gt;AppRegistry||+register(): void;+start(): void;+stop(): void]
+[&lt;interface&gt;AppMethods||+init(): void;+destroy(): void]
+[&lt;interface&gt;AppRegistryOptions|+endpoint: string;+style?: string|]
+[&lt;interface&gt;ViewContactEvent|+contactId: string|]
+[&lt;interface&gt;SoftPhoneOptions|+allowFramedSoftphone?: boolean;+disableRingtone?: boolean;+ringtoneUrl?: string;+disableEchoCancellation?: boolean;+disableStoringParamsInLocalStorage?: boolean;+allowFramedVideoCall?: boolean;+VDIPlatform?: string;+allowEarlyGum?: boolean|]
+[&lt;interface&gt;ChatOptions|+disableRingtone?: boolean;+ringtoneUrl?: string|]
+[&lt;interface&gt;TaskOptions|+disableRingtone?: boolean;+ringtoneUrl?: string|]
+[&lt;interface&gt;LoginOptions|+autoClose?: boolean;+height?: number;+width?: number;+top?: number;+left?: number|]
+[&lt;interface&gt;PageOptions|+enableAudioDeviceSettings?: boolean;+enableVideoDeviceSettings?: boolean;+enablePhoneTypeSettings?: boolean|]
+[&lt;interface&gt;InitCCPOptions|+ccpUrl: string;+region?: string;+loginPopup?: boolean;+loginOptions?: LoginOptions;+loginPopupAutoClose?: boolean;+loginUrl?: string;+softphone?: SoftPhoneOptions;+chat?: ChatOptions;+task?: TaskOptions;+iframeTitle?: string;+pageOptions?: PageOptions;+ccpAckTimeout?: number;+ccpSynTimeout?: number;+ccpLoadTimeout?: number;+storageAccess?: StorageAccessParameters|]
+[&lt;interface&gt;TerminateCustomViewOptions|+resolveIframe: boolean;+timeout?: number;+hideIframe?: boolean|]
+[&lt;interface&gt;OptionalCustomViewsOptions|+contact?: string \| Contact;+contactFlowId?: string;+iframeSuffix?: string;+disableAutoDestroy?: boolean;+terminateCustomViewOptions?: TerminateCustomViewOptions|]
+[&lt;interface&gt;OptionalInitCCPOptions|+region?: string;+loginPopup?: boolean;+loginOptions?: LoginOptions;+loginPopupAutoClose?: boolean;+loginUrl?: string;+softphone?: SoftPhoneOptions;+chat?: ChatOptions;+pageOptions?: PageOptions;+ccpAckTimeout?: number;+ccpSynTimeout?: number;+ccpLoadTimeout?: number|]
+[&lt;interface&gt;SuccessFailOptions|+success?: SuccessFailCallback&lt;\[\]&gt;;+failure?: SuccessFailCallback&lt;\[string\]&gt;|]
+[&lt;interface&gt;ConnectOptions|+queueARN?: string|]
+[&lt;interface&gt;AgentSetStateOptions|+enqueueNextState?: boolean|]
+[&lt;interface&gt;AgentMutedStatus|+muted: boolean|]
+[&lt;interface&gt;AgentStateChange|+agent: Agent;+oldState: string;+newState: string|]
+[&lt;interface&gt;AgentStateDefinition|+agentStateARN: string;+type: AgentStateType;+name: string|]
+[&lt;interface&gt;AgentPreferences|+locale?: string|]
+[&lt;interface&gt;UserMediaDeviceChange|+deviceId: string|]
+[&lt;interface&gt;UserBackgroundBlurChange|+isBackgroundBlurEnabled: boolean|]
+[&lt;interface&gt;TaskContactDefinition|+endpoint: Endpoint;+previousContactId?: string;+name: string;+description: string;+references: ReferenceDictionary;+scheduledTime: number;+idempotencyToken: string|]
+[&lt;interface&gt;AgentAvailabilityState|+state: string;+timeStamp: Date|]
+[&lt;interface&gt;AgentState|+agentStateARN: string \| null;+name: string;+startTimestamp: Date;+type: AgentStateType|]
+[&lt;interface&gt;AgentConfiguration|+agentStates: AgentStateDefinition\[\];+agentPreferences?: AgentPreferences;+dialableCountries: string\[\];+extension: string;+name: string;+permissions: string\[\];+routingProfile: AgentRoutingProfile;+softphoneAutoAccept: boolean;+softphoneEnabled: boolean;+username: string;+agentARN: string|]
+[&lt;interface&gt;AgentRoutingProfile|+channelConcurrencyMap: AgentChannelConcurrencyMap;+defaultOutboundQueue: Queue;+name: string;+queues: Queue\[\];+routingProfileARN: string;+routingProfileId: string|]
+[&lt;interface&gt;GetEndpointsResult|+endpoints: Endpoint\[\];+addresses: Endpoint\[\]|]
+[&lt;interface&gt;GetEndpointsCallbacks|+success: SuccessFailCallback&lt;\[GetEndpointsResult\]&gt;;+failure?: SuccessFailCallback&lt;\[string\]&gt;|]
+[&lt;interface&gt;AttributeDictionary||]
+[&lt;interface&gt;SegmentAttributeDictionary||]
+[&lt;interface&gt;ReferenceDictionary||]
+[&lt;interface&gt;ChannelContext|+scheduledTime?: number;+taskTemplateId?: string;+taskTemplateVersion?: number|]
+[&lt;interface&gt;QuickResponsesQuery|+query: string;+contactId?: string;+nextToken?: string;+debounceMS?: number|]
+[&lt;interface&gt;SearchQuickResponsesResult|+results: QuickResponse\[\];+nextToken?: string|]
+[&lt;interface&gt;QuickResponse|+quickResponseArn: string;+quickResponseId: string;+knowledgeBaseArn: string;+knowledgeBaseId: string;+name: string;+version: string;+contentType: QuickResponseContentType;+status: QuickResponseStatusType;+statusReason: string;+createdTime: number;+lastModifiedTime: number;+title?: string;+contents: QuickResponseContentsType;+description?: string;+groupingConfiguration: GroupingConfigurationType;+shortcutKey?: string;+lastModifiedBy: string;+isActive: boolean;+channels: QuickResponseChannels;+language: string;+tags: Tags|]
+[&lt;interface&gt;ContactState|+type: ContactStateType;+timestamp: Date|]
+[&lt;interface&gt;Queue|+name: string;+queueARN: string;+queueId: string|]
+[&lt;interface&gt;CapabilitiesDictionary||]
+[&lt;interface&gt;ConnectionState|+timestamp: Date;+type: ConnectionStateType|]
+[&lt;interface&gt;ConnectionToken|+chatTokenTransport: { readonly expiry: string; readonly participantToken: string; }|]
+[&lt;interface&gt;VoiceMediaInfo|+autoAccept: boolean;+callConfigJson: string;+callContextToken: string;+callType: SoftphoneCallType;+mediaLegContextToken: string|]
+[&lt;interface&gt;ChatMediaInfo|+contactId: string;+getConnectionToken: () =&gt; Promise&lt;ConnectionToken&gt;;+initialContactId: string;+originalInfo: { readonly chatAutoAccept: boolean; readonly connectionData: string; readonly customerName: string \| null; };+participantId: string;+participantToken: string|]
+[&lt;interface&gt;TaskMediaInfo|+contactId: string;+initialContactId: string|]
+[&lt;interface&gt;MonitorInfo|+agentName: string;+customerName: string;+joinTime: Date|]
+[&lt;interface&gt;Logger||+debug(): LogEntry;+info(): LogEntry;+warn(): LogEntry;+error(): LogEntry;+download(): void;+setLogLevel(): void;+setEchoLevel(): void]
+[&lt;interface&gt;LogEntry||+withException(): LogEntry;+withObject(): LogEntry]
+[&lt;enumeration&gt;EventType|ACKNOWLEDGE;ACK_TIMEOUT;INIT;API_REQUEST;API_RESPONSE;AUTH_FAIL;ACCESS_DENIED;CLOSE;CONFIGURE;LOG;MASTER_REQUEST;MASTER_RESPONSE;SYNCHRONIZE;TERMINATE;TERMINATED;SEND_LOGS;RELOAD_AGENT_CONFIGURATION;BROADCAST;API_METRIC;CLIENT_METRIC;SOFTPHONE_STATS;SOFTPHONE_REPORT;CLIENT_SIDE_LOGS;SERVER_BOUND_INTERNAL_LOG;MUTE;IFRAME_STYLE;IFRAME_RETRIES_EXHAUSTED;UPDATE_CONNECTED_CCPS;OUTER_CONTEXT_INFO;MEDIA_DEVICE_REQUEST;MEDIA_DEVICE_RESPONSE;TAB_ID;AUTHORIZE_SUCCESS;AUTHORIZE_RETRIES_EXHAUSTED;CTI_AUTHORIZE_RETRIES_EXHAUSTED;CLICK_STREAM_DATA;SET_QUICK_GET_AGENT_SNAPSHOT_FLAG;API_PROXY;API_PROXY_REQUEST;API_PROXY_RESPONSE]
+[&lt;enumeration&gt;AgentStateType|INIT;ROUTABLE;NOT_ROUTABLE;OFFLINE]
+[&lt;enumeration&gt;AgentAvailStates|INIT;BUSY;AFTER_CALL_WORK;CALLING_CUSTOMER;DIALING;JOINING;PENDING_AVAILABLE;PENDING_BUSY]
+[&lt;enumeration&gt;AgentErrorStates|ERROR;AGENT_HUNG_UP;BAD_ADDRESS_AGENT;BAD_ADDRESS_CUSTOMER;DEFAULT;FAILED_CONNECT_AGENT;FAILED_CONNECT_CUSTOMER;LINE_ENGAGED_AGENT;LINE_ENGAGED_CUSTOMER;MISSED_CALL_AGENT;MISSED_CALL_CUSTOMER;MULTIPLE_CCP_WINDOWS;REALTIME_COMMUNICATION_ERROR]
+[&lt;enumeration&gt;AgentEvents|INIT;UPDATE;REFRESH;ROUTABLE;NOT_ROUTABLE;PENDING;CONTACT_PENDING;OFFLINE;ERROR;SOFTPHONE_ERROR;WEBSOCKET_CONNECTION_LOST;WEBSOCKET_CONNECTION_GAINED;STATE_CHANGE;ACW;MUTE_TOGGLE;LOCAL_MEDIA_STREAM_CREATED;ENQUEUED_NEXT_STATE]
+[&lt;enumeration&gt;EndpointType|PHONE_NUMBER;AGENT;QUEUE]
+[&lt;enumeration&gt;ReferenceType|URL]
+[&lt;enumeration&gt;ConnectionType|AGENT;INBOUND;OUTBOUND;MONITORING]
+[&lt;enumeration&gt;ConnectionStateType|INIT;CONNECTING;CONNECTED;HOLD;DISCONNECTED;SILENT_MONITOR;BARGE]
+[&lt;enumeration&gt;ContactEvents|INIT;REFRESH;DESTROYED;INCOMING;PENDING;CONNECTING;CONNECTED;MISSED;ACW;VIEW;ENDED;ERROR;ACCEPTED;PAUSED]
+[&lt;enumeration&gt;ContactStateType|INIT;INCOMING;PENDING;CONNECTING;CONNECTED;MISSED;REJECTED;ERROR;ENDED;PAUSED]
+[&lt;enumeration&gt;CONTACT_ACTIVE_STATES|INCOMING;PENDING;CONNECTING;CONNECTED]
+[&lt;enumeration&gt;ContactType|VOICE;QUEUE_CALLBACK;CHAT;TASK]
+[&lt;enumeration&gt;VDIPlatformType|CITRIX]
+[&lt;enumeration&gt;ChannelType|VOICE;CHAT;TASK]
+[&lt;enumeration&gt;MediaType|SOFTPHONE;CHAT;TASK]
+[&lt;enumeration&gt;SoftphoneCallType|AUDIO_VIDEO;VIDEO_ONLY;AUDIO_ONLY;NONE]
+[&lt;enumeration&gt;SoftphoneErrorTypes|UNSUPPORTED_BROWSER;MICROPHONE_NOT_SHARED;SIGNALLING_HANDSHAKE_FAILURE;SIGNALLING_CONNECTION_FAILURE;ICE_COLLECTION_TIMEOUT;USER_BUSY_ERROR;WEBRTC_ERROR;REALTIME_COMMUNICATION_ERROR;OTHER]
+[&lt;enumeration&gt;ClickType|ACCEPT;REJECT;HANGUP]
+[&lt;enumeration&gt;CTIExceptions|ACCESS_DENIED_EXCEPTION;INVALID_STATE_EXCEPTION;BAD_ENDPOINT_EXCEPTION;INVALID_AGENT_ARNEXCEPTION;INVALID_CONFIGURATION_EXCEPTION;INVALID_CONTACT_TYPE_EXCEPTION;PAGINATION_EXCEPTION;REFRESH_TOKEN_EXPIRED_EXCEPTION;SEND_DATA_FAILED_EXCEPTION;UNAUTHORIZED_EXCEPTION]
+[&lt;enumeration&gt;MonitoringMode|SILENT_MONITOR;BARGE]
+[&lt;enumeration&gt;MasterTopics|LOGIN_POPUP;SEND_LOGS;SOFTPHONE;RINGTONE;METRICS]
+[&lt;enumeration&gt;VideoCapability|SEND]
+[&lt;enumeration&gt;LogLevel|TEST;TRACE;DEBUG;INFO;LOG;WARN;ERROR;CRITICAL]
+[&lt;type&gt;StorageAccessCallbackData|+data: { \[key: string\]: any; hasAccess?: boolean \| undefined; };+event: string|]
+[&lt;type&gt;AppData|+containerDOM: HTMLElement;+endpoint: string;+style?: string;+instance?: AppMethods|]
+[&lt;type&gt;StorageAccessParameters|+mode?: &quot;default&quot; \| &quot;custom&quot;;+canRequest?: boolean;+instanceUrl?: string;+style?: { &quot;font-family&quot;: string; &quot;primary-color&quot;: string; &quot;primary-button-hover-color&quot;: string; &quot;link-color&quot;: string; &quot;banner-box-shadow&quot;: string; &quot;banner-margin&quot;: string; &quot;border-radius&quot;: string; &quot;banner-header-color&quot;: string; ... 11 more ...; &quot;banner-description-font-size&quot;: string; };+custom?: { hideCCP?: boolean \| undefined; header?: string \| undefined; title?: string \| undefined; accessBannerDescription?: string \| undefined; denyBannerDescription?: string \| undefined; ... 12 more ...; promptBannerButtonText?: string \| undefined; }|]
+[&lt;type&gt;QuickResponseContentsType|+plainText: { content: string; };+markdown: { content: string; }|]
+[&lt;type&gt;GroupingConfigurationType|+criteria: string;+values: (string \| null)\[\]|]
+[BaseConnection]&lt;:-[VoiceConnection]
+[BaseConnection]&lt;:-[ChatConnection]
+[BaseConnection]&lt;:-[TaskConnection]
+[SuccessFailOptions]&lt;:--[ConnectOptions]</desc>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="1489.0" width="25390.0" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#eee8d5" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<path d="M2323.8 652.9 L1995 998 L1995 1018 L1995.0 1018.0 " fill="none"></path>
+<path d="M2327.7 656.6 L2323.8 652.9 L2319.9 649.2 L2333.0 643.3 Z"></path>
+<path d="M2480.0 691.3 L2480 998 L2480 1123 L2480.0 1123.0 " fill="none"></path>
+<path d="M2485.3 691.3 L2480.0 691.3 L2474.7 691.3 L2480.0 678.0 Z"></path>
+<path d="M2640.2 514.8 L5644 998 L5644 1175.5 L5644.0 1175.5 " fill="none"></path>
+<path d="M2641.0 509.5 L2640.2 514.8 L2639.3 520.0 L2627.0 512.6 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M8678.0 544.8 L8678 998 L8678 1190.5 L8678.0 1190.5 " fill="none"></path>
+</g>
+<path d="M8683.3 544.8 L8678.0 544.8 L8672.7 544.8 L8678.0 531.5 Z"></path>
+<g data-name="Agent">
+<g fill="#eee8d5" stroke="#33322E" data-name="Agent">
+<rect x="0.0" y="79.0" height="820.0" width="487.0" data-name="Agent"></rect>
+<path d="M0.0 110.0 L487.0 110.0" fill="none" data-name="Agent"></path>
+<path d="M0.0 118.0 L487.0 118.0" fill="none" data-name="Agent"></path>
+</g>
+<g transform="translate(0, 79)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Agent">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Agent">
+<a id="index.ts.Agent" xlink:href="index.ts"><text x="235.5" y="13.5" stroke="none" text-anchor="middle" data-name="Agent">Agent</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 110)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Agent">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Agent">
+
+</g>
+</g>
+<g transform="translate(0, 118)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Agent">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Agent">
+<text x="0.0" y="13.5" stroke="none" data-name="Agent">+onRefresh(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Agent">+onStateChange(): void</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Agent">+onRoutable(): void</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Agent">+onNotRoutable(): void</text>
+<text x="0.0" y="73.5" stroke="none" data-name="Agent">+onOffline(): void</text>
+<text x="0.0" y="88.5" stroke="none" data-name="Agent">+onError(): void</text>
+<text x="0.0" y="103.5" stroke="none" data-name="Agent">+onWebSocketConnectionLost(): void</text>
+<text x="0.0" y="118.5" stroke="none" data-name="Agent">+onWebSocketConnectionGained(): void</text>
+<text x="0.0" y="133.5" stroke="none" data-name="Agent">+onSoftphoneError(): void</text>
+<text x="0.0" y="148.5" stroke="none" data-name="Agent">+onAfterCallWork(): void</text>
+<text x="0.0" y="163.5" stroke="none" data-name="Agent">+onWebSocketConnectionLost(): void</text>
+<text x="0.0" y="178.5" stroke="none" data-name="Agent">+getAvailabilityState(): AgentAvailabilityState</text>
+<text x="0.0" y="193.5" stroke="none" data-name="Agent">+getState(): AgentState</text>
+<text x="0.0" y="208.5" stroke="none" data-name="Agent">+getStatus(): AgentState</text>
+<text x="0.0" y="223.5" stroke="none" data-name="Agent">+getNextState(): AgentState</text>
+<text x="0.0" y="238.5" stroke="none" data-name="Agent">+getStateDuration(): number</text>
+<text x="0.0" y="253.5" stroke="none" data-name="Agent">+getPermissions(): string[]</text>
+<text x="0.0" y="268.5" stroke="none" data-name="Agent">+getContacts(): Contact[]</text>
+<text x="0.0" y="283.5" stroke="none" data-name="Agent">+getConfiguration(): AgentConfiguration</text>
+<text x="0.0" y="298.5" stroke="none" data-name="Agent">+getAgentStates(): AgentStateDefinition[]</text>
+<text x="0.0" y="313.5" stroke="none" data-name="Agent">+getRoutingProfile(): AgentRoutingProfile</text>
+<text x="0.0" y="328.5" stroke="none" data-name="Agent">+getChannelConcurrency(): AgentChannelConcurrencyMap</text>
+<text x="0.0" y="343.5" stroke="none" data-name="Agent">+getChannelConcurrency(): number</text>
+<text x="0.0" y="358.5" stroke="none" data-name="Agent">+getAgentARN(): string</text>
+<text x="0.0" y="373.5" stroke="none" data-name="Agent">+getName(): string</text>
+<text x="0.0" y="388.5" stroke="none" data-name="Agent">+getExtension(): string</text>
+<text x="0.0" y="403.5" stroke="none" data-name="Agent">+getDialableCountries(): string[]</text>
+<text x="0.0" y="418.5" stroke="none" data-name="Agent">+isSoftphoneEnabled(): boolean</text>
+<text x="0.0" y="433.5" stroke="none" data-name="Agent">+setConfiguration(): void</text>
+<text x="0.0" y="448.5" stroke="none" data-name="Agent">+setState(): void</text>
+<text x="0.0" y="463.5" stroke="none" data-name="Agent">+createTask(): void</text>
+<text x="0.0" y="478.5" stroke="none" data-name="Agent">+setStatus(): void</text>
+<text x="0.0" y="493.5" stroke="none" data-name="Agent">+connect(): void</text>
+<text x="0.0" y="508.5" stroke="none" data-name="Agent">+getAllQueueARNs(): string[]</text>
+<text x="0.0" y="523.5" stroke="none" data-name="Agent">+getEndpoints(): void</text>
+<text x="0.0" y="538.5" stroke="none" data-name="Agent">+toSnapshot(): Agent</text>
+<text x="0.0" y="553.5" stroke="none" data-name="Agent">+mute(): void</text>
+<text x="0.0" y="568.5" stroke="none" data-name="Agent">+unmute(): void</text>
+<text x="0.0" y="583.5" stroke="none" data-name="Agent">+setSpeakerDevice(): void</text>
+<text x="0.0" y="598.5" stroke="none" data-name="Agent">+setMicrophoneDevice(): void</text>
+<text x="0.0" y="613.5" stroke="none" data-name="Agent">+setRingerDevice(): void</text>
+<text x="0.0" y="628.5" stroke="none" data-name="Agent">+setCameraDevice(): void</text>
+<text x="0.0" y="643.5" stroke="none" data-name="Agent">+setBackgroundBlur(): void</text>
+<text x="0.0" y="658.5" stroke="none" data-name="Agent">+onMuteToggle(): void</text>
+<text x="0.0" y="673.5" stroke="none" data-name="Agent">+connect(): void</text>
+<text x="0.0" y="688.5" stroke="none" data-name="Agent">+onSpeakerDeviceChanged(): void</text>
+<text x="0.0" y="703.5" stroke="none" data-name="Agent">+onMicrophoneDeviceChanged(): void</text>
+<text x="0.0" y="718.5" stroke="none" data-name="Agent">+onRingerDeviceChanged(): void</text>
+<text x="0.0" y="733.5" stroke="none" data-name="Agent">+onCameraDeviceChanged(): void</text>
+<text x="0.0" y="748.5" stroke="none" data-name="Agent">+onBackgroundBlurChanged(): void</text>
+<text x="0.0" y="763.5" stroke="none" data-name="Agent">+onEnqueuedNextState(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="Contact">
+<g fill="#eee8d5" stroke="#33322E" data-name="Contact">
+<rect x="527.0" y="0.0" height="978.0" width="514.0" data-name="Contact"></rect>
+<path d="M527.0 31.0 L1041.0 31.0" fill="none" data-name="Contact"></path>
+<path d="M527.0 62.0 L1041.0 62.0" fill="none" data-name="Contact"></path>
+</g>
+<g transform="translate(527, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Contact">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Contact">
+<a id="index.ts.Contact" xlink:href="index.ts"><text x="249.0" y="13.5" stroke="none" text-anchor="middle" data-name="Contact">Contact</text></a>
+
+</g>
+</g>
+<g transform="translate(527, 31)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Contact">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Contact">
+<text x="0.0" y="13.5" stroke="none" data-name="Contact">+contactId: string</text>
+
+</g>
+</g>
+<g transform="translate(527, 62)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Contact">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Contact">
+<text x="0.0" y="13.5" stroke="none" data-name="Contact">+onRefresh(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Contact">+onIncoming(): void</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Contact">+onPending(): void</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Contact">+onConnecting(): void</text>
+<text x="0.0" y="73.5" stroke="none" data-name="Contact">+onAccepted(): void</text>
+<text x="0.0" y="88.5" stroke="none" data-name="Contact">+onMissed(): void</text>
+<text x="0.0" y="103.5" stroke="none" data-name="Contact">+onEnded(): void</text>
+<text x="0.0" y="118.5" stroke="none" data-name="Contact">+onDestroy(): void</text>
+<text x="0.0" y="133.5" stroke="none" data-name="Contact">+onACW(): void</text>
+<text x="0.0" y="148.5" stroke="none" data-name="Contact">+onConnected(): void</text>
+<text x="0.0" y="163.5" stroke="none" data-name="Contact">+onError(): void</text>
+<text x="0.0" y="178.5" stroke="none" data-name="Contact">+getEventName(): string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="Contact">+getContactId(): string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="Contact">+getOriginalContactId(): string</text>
+<text x="0.0" y="223.5" stroke="none" data-name="Contact">+getInitialContactId(): string</text>
+<text x="0.0" y="238.5" stroke="none" data-name="Contact">+getType(): ContactType</text>
+<text x="0.0" y="253.5" stroke="none" data-name="Contact">+getState(): ContactState</text>
+<text x="0.0" y="268.5" stroke="none" data-name="Contact">+getStatus(): ContactState</text>
+<text x="0.0" y="283.5" stroke="none" data-name="Contact">+getName(): string</text>
+<text x="0.0" y="298.5" stroke="none" data-name="Contact">+getDescription(): string</text>
+<text x="0.0" y="313.5" stroke="none" data-name="Contact">+getReferences(): ReferenceDictionary</text>
+<text x="0.0" y="328.5" stroke="none" data-name="Contact">+getStateDuration(): number</text>
+<text x="0.0" y="343.5" stroke="none" data-name="Contact">+getStatusDuration(): number</text>
+<text x="0.0" y="358.5" stroke="none" data-name="Contact">+getQueue(): Queue</text>
+<text x="0.0" y="373.5" stroke="none" data-name="Contact">+getQueueTimestamp(): Date</text>
+<text x="0.0" y="388.5" stroke="none" data-name="Contact">+getConnections(): BaseConnection[]</text>
+<text x="0.0" y="403.5" stroke="none" data-name="Contact">+getInitialConnection(): BaseConnection</text>
+<text x="0.0" y="418.5" stroke="none" data-name="Contact">+getActiveInitialConnection(): BaseConnection | null</text>
+<text x="0.0" y="433.5" stroke="none" data-name="Contact">+getThirdPartyConnections(): BaseConnection[]</text>
+<text x="0.0" y="448.5" stroke="none" data-name="Contact">+getSingleActiveThirdPartyConnection(): BaseConnection | null</text>
+<text x="0.0" y="463.5" stroke="none" data-name="Contact">+getAgentConnection(): BaseConnection</text>
+<text x="0.0" y="478.5" stroke="none" data-name="Contact">+getActiveConnections(): BaseConnection[]</text>
+<text x="0.0" y="493.5" stroke="none" data-name="Contact">+hasTwoActiveParticipants(): boolean</text>
+<text x="0.0" y="508.5" stroke="none" data-name="Contact">+getAttributes(): AttributeDictionary</text>
+<text x="0.0" y="523.5" stroke="none" data-name="Contact">+getChannelContext(): ChannelContext | undefined</text>
+<text x="0.0" y="538.5" stroke="none" data-name="Contact">+getSegmentAttributes(): SegmentAttributeDictionary</text>
+<text x="0.0" y="553.5" stroke="none" data-name="Contact">+getContactSubtype(): string | null</text>
+<text x="0.0" y="568.5" stroke="none" data-name="Contact">+isSoftphoneCall(): boolean</text>
+<text x="0.0" y="583.5" stroke="none" data-name="Contact">+hasVideoRTCCapabilities(): boolean</text>
+<text x="0.0" y="598.5" stroke="none" data-name="Contact">+canAgentSendVideo(): boolean</text>
+<text x="0.0" y="613.5" stroke="none" data-name="Contact">+canAgentReceiveVideo(): boolean</text>
+<text x="0.0" y="628.5" stroke="none" data-name="Contact">+isInbound(): boolean</text>
+<text x="0.0" y="643.5" stroke="none" data-name="Contact">+isConnected(): boolean</text>
+<text x="0.0" y="658.5" stroke="none" data-name="Contact">+accept(): void</text>
+<text x="0.0" y="673.5" stroke="none" data-name="Contact">+pause(): void</text>
+<text x="0.0" y="688.5" stroke="none" data-name="Contact">+resume(): void</text>
+<text x="0.0" y="703.5" stroke="none" data-name="Contact">+destroy(): void</text>
+<text x="0.0" y="718.5" stroke="none" data-name="Contact">+reject(): void</text>
+<text x="0.0" y="733.5" stroke="none" data-name="Contact">+clear(): void</text>
+<text x="0.0" y="748.5" stroke="none" data-name="Contact">+complete(): void</text>
+<text x="0.0" y="763.5" stroke="none" data-name="Contact">+notifyIssue(): void</text>
+<text x="0.0" y="778.5" stroke="none" data-name="Contact">+addConnection(): void</text>
+<text x="0.0" y="793.5" stroke="none" data-name="Contact">+toggleActiveConnections(): void</text>
+<text x="0.0" y="808.5" stroke="none" data-name="Contact">+conferenceConnections(): void</text>
+<text x="0.0" y="823.5" stroke="none" data-name="Contact">+toSnapshot(): Contact</text>
+<text x="0.0" y="838.5" stroke="none" data-name="Contact">+isMultiPartyConferenceEnabled(): boolean</text>
+<text x="0.0" y="853.5" stroke="none" data-name="Contact">+isUnderSupervision(): boolean</text>
+<text x="0.0" y="868.5" stroke="none" data-name="Contact">+updateMonitorParticipantState(): void</text>
+<text x="0.0" y="883.5" stroke="none" data-name="Contact">+silentMonitor(): void</text>
+<text x="0.0" y="898.5" stroke="none" data-name="Contact">+bargeIn(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="QuickResponses">
+<g fill="#eee8d5" stroke="#33322E" data-name="QuickResponses">
+<rect x="1081.0" y="446.5" height="85.0" width="607.0" data-name="QuickResponses"></rect>
+<path d="M1081.0 477.5 L1688.0 477.5" fill="none" data-name="QuickResponses"></path>
+<path d="M1081.0 485.5 L1688.0 485.5" fill="none" data-name="QuickResponses"></path>
+</g>
+<g transform="translate(1081, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="QuickResponses">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="QuickResponses">
+<a id="index.ts.QuickResponses" xlink:href="index.ts"><text x="295.5" y="13.5" stroke="none" text-anchor="middle" data-name="QuickResponses">QuickResponses</text></a>
+
+</g>
+</g>
+<g transform="translate(1081, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponses">
+<g transform="translate(8, 8)" fill="#33322E" data-name="QuickResponses">
+
+</g>
+</g>
+<g transform="translate(1081, 485.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponses">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="QuickResponses">
+<text x="0.0" y="13.5" stroke="none" data-name="QuickResponses">+static isEnabled(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="QuickResponses">+static searchQuickResponses(): Promise&lt;SearchQuickResponsesResult&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="Endpoint">
+<g fill="#eee8d5" stroke="#33322E" data-name="Endpoint">
+<rect x="1728.0" y="397.5" height="183.0" width="297.0" data-name="Endpoint"></rect>
+<path d="M1728.0 428.5 L2025.0 428.5" fill="none" data-name="Endpoint"></path>
+<path d="M1728.0 549.5 L2025.0 549.5" fill="none" data-name="Endpoint"></path>
+</g>
+<g transform="translate(1728, 397.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Endpoint">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Endpoint">
+<a id="index.ts.Endpoint" xlink:href="index.ts"><text x="140.5" y="13.5" stroke="none" text-anchor="middle" data-name="Endpoint">Endpoint</text></a>
+
+</g>
+</g>
+<g transform="translate(1728, 428.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Endpoint">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Endpoint">
+<text x="0.0" y="13.5" stroke="none" data-name="Endpoint">+endpointARN: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Endpoint">+endpointId: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Endpoint">+type: EndpointType</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Endpoint">+name: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="Endpoint">+phoneNumber: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="Endpoint">+agentLogin: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="Endpoint">+queue: string</text>
+
+</g>
+</g>
+<g transform="translate(1728, 549.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Endpoint">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Endpoint">
+<text x="0.0" y="13.5" stroke="none" data-name="Endpoint">+static byPhoneNumber(): Endpoint</text>
+
+</g>
+</g>
+</g>
+<g data-name="SoftphoneError">
+<g fill="#eee8d5" stroke="#33322E" data-name="SoftphoneError">
+<rect x="2065.0" y="412.5" height="153.0" width="228.0" data-name="SoftphoneError"></rect>
+<path d="M2065.0 443.5 L2293.0 443.5" fill="none" data-name="SoftphoneError"></path>
+<path d="M2065.0 504.5 L2293.0 504.5" fill="none" data-name="SoftphoneError"></path>
+</g>
+<g transform="translate(2065, 412.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="SoftphoneError">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SoftphoneError">
+<a id="index.ts.SoftphoneError" xlink:href="index.ts"><text x="106.0" y="13.5" stroke="none" text-anchor="middle" data-name="SoftphoneError">SoftphoneError</text></a>
+
+</g>
+</g>
+<g transform="translate(2065, 443.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneError">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SoftphoneError">
+<text x="0.0" y="13.5" stroke="none" data-name="SoftphoneError">+errorType: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SoftphoneError">+errorMessage: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="SoftphoneError">+endPointUrl: string</text>
+
+</g>
+</g>
+<g transform="translate(2065, 504.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneError">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SoftphoneError">
+<text x="0.0" y="13.5" stroke="none" data-name="SoftphoneError">+getErrorType(): string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SoftphoneError">+getErrorMessage(): string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="SoftphoneError">+getEndPointUrl(): string</text>
+
+</g>
+</g>
+</g>
+<g data-name="BaseConnection">
+<g fill="#eee8d5" stroke="#33322E" data-name="BaseConnection">
+<rect x="2333.0" y="300.0" height="378.0" width="294.0" data-name="BaseConnection"></rect>
+<path d="M2333.0 331.0 L2627.0 331.0" fill="none" data-name="BaseConnection"></path>
+<path d="M2333.0 377.0 L2627.0 377.0" fill="none" data-name="BaseConnection"></path>
+</g>
+<g transform="translate(2333, 300)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BaseConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BaseConnection">
+<a id="index.ts.BaseConnection" xlink:href="index.ts"><text x="139.0" y="13.5" stroke="none" text-anchor="middle" data-name="BaseConnection">BaseConnection</text></a>
+
+</g>
+</g>
+<g transform="translate(2333, 331)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BaseConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BaseConnection">
+<text x="0.0" y="13.5" stroke="none" data-name="BaseConnection">+contactId: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="BaseConnection">+connectionId: string</text>
+
+</g>
+</g>
+<g transform="translate(2333, 377)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BaseConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BaseConnection">
+<text x="0.0" y="13.5" stroke="none" data-name="BaseConnection">+getContactId(): string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="BaseConnection">+getConnectionId(): string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="BaseConnection">+getEndpoint(): Endpoint</text>
+<text x="0.0" y="58.5" stroke="none" data-name="BaseConnection">+getAddress(): Endpoint</text>
+<text x="0.0" y="73.5" stroke="none" data-name="BaseConnection">+getState(): ConnectionState</text>
+<text x="0.0" y="88.5" stroke="none" data-name="BaseConnection">+getStatus(): ConnectionState</text>
+<text x="0.0" y="103.5" stroke="none" data-name="BaseConnection">+getStateDuration(): number</text>
+<text x="0.0" y="118.5" stroke="none" data-name="BaseConnection">+getStatusDuration(): number</text>
+<text x="0.0" y="133.5" stroke="none" data-name="BaseConnection">+getType(): ConnectionType</text>
+<text x="0.0" y="148.5" stroke="none" data-name="BaseConnection">+getMonitorInfo(): MonitorInfo | null</text>
+<text x="0.0" y="163.5" stroke="none" data-name="BaseConnection">+isInitialConnection(): boolean</text>
+<text x="0.0" y="178.5" stroke="none" data-name="BaseConnection">+isActive(): boolean</text>
+<text x="0.0" y="193.5" stroke="none" data-name="BaseConnection">+isConnected(): boolean</text>
+<text x="0.0" y="208.5" stroke="none" data-name="BaseConnection">+isConnecting(): boolean</text>
+<text x="0.0" y="223.5" stroke="none" data-name="BaseConnection">+isOnHold(): boolean</text>
+<text x="0.0" y="238.5" stroke="none" data-name="BaseConnection">+destroy(): void</text>
+<text x="0.0" y="253.5" stroke="none" data-name="BaseConnection">+sendDigits(): void</text>
+<text x="0.0" y="268.5" stroke="none" data-name="BaseConnection">+hold(): void</text>
+<text x="0.0" y="283.5" stroke="none" data-name="BaseConnection">+resume(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="VoiceConnection">
+<g fill="#eee8d5" stroke="#33322E" data-name="VoiceConnection">
+<rect x="1767.5" y="1018.0" height="415.0" width="455.0" data-name="VoiceConnection"></rect>
+<path d="M1767.5 1049.0 L2222.5 1049.0" fill="none" data-name="VoiceConnection"></path>
+<path d="M1767.5 1057.0 L2222.5 1057.0" fill="none" data-name="VoiceConnection"></path>
+</g>
+<g transform="translate(1767.5, 1018)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="VoiceConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="VoiceConnection">
+<a id="index.ts.VoiceConnection" xlink:href="index.ts"><text x="219.5" y="13.5" stroke="none" text-anchor="middle" data-name="VoiceConnection">VoiceConnection</text></a>
+
+</g>
+</g>
+<g transform="translate(1767.5, 1049)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VoiceConnection">
+<g transform="translate(8, 8)" fill="#33322E" data-name="VoiceConnection">
+
+</g>
+</g>
+<g transform="translate(1767.5, 1057)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VoiceConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="VoiceConnection">
+<text x="0.0" y="13.5" stroke="none" data-name="VoiceConnection">+getMediaInfo(): VoiceMediaInfo</text>
+<text x="0.0" y="28.5" stroke="none" data-name="VoiceConnection">+getMediaType(): MediaType.SOFTPHONE</text>
+<text x="0.0" y="43.5" stroke="none" data-name="VoiceConnection">+getMediaController(): Promise&lt;any&gt;</text>
+<text x="0.0" y="58.5" stroke="none" data-name="VoiceConnection">+getVoiceIdSpeakerId(): Promise&lt;any&gt;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="VoiceConnection">+getVoiceIdSpeakerStatus(): Promise&lt;any&gt;</text>
+<text x="0.0" y="88.5" stroke="none" data-name="VoiceConnection">+optOutVoiceIdSpeaker(): Promise&lt;any&gt;</text>
+<text x="0.0" y="103.5" stroke="none" data-name="VoiceConnection">+evaluateSpeakerWithVoiceId(): Promise&lt;any&gt;</text>
+<text x="0.0" y="118.5" stroke="none" data-name="VoiceConnection">+enrollSpeakerInVoiceId(): Promise&lt;any&gt;</text>
+<text x="0.0" y="133.5" stroke="none" data-name="VoiceConnection">+updateVoiceIdSpeakerId(): Promise&lt;any&gt;</text>
+<text x="0.0" y="148.5" stroke="none" data-name="VoiceConnection">+deleteVoiceIdSpeakerId(): Promise&lt;any&gt;</text>
+<text x="0.0" y="163.5" stroke="none" data-name="VoiceConnection">+getQuickConnectName(): string | null</text>
+<text x="0.0" y="178.5" stroke="none" data-name="VoiceConnection">+isMute(): boolean</text>
+<text x="0.0" y="193.5" stroke="none" data-name="VoiceConnection">+muteParticipant(): void</text>
+<text x="0.0" y="208.5" stroke="none" data-name="VoiceConnection">+unmuteParticipant(): void</text>
+<text x="0.0" y="223.5" stroke="none" data-name="VoiceConnection">+canSendVideo(): boolean</text>
+<text x="0.0" y="238.5" stroke="none" data-name="VoiceConnection">+getCapabilities(): CapabilitiesDictionary</text>
+<text x="0.0" y="253.5" stroke="none" data-name="VoiceConnection">+getVideoConnectionInfo(): Promise&lt;any&gt;</text>
+<text x="0.0" y="268.5" stroke="none" data-name="VoiceConnection">+isSilentMonitor(): boolean</text>
+<text x="0.0" y="283.5" stroke="none" data-name="VoiceConnection">+isBarge(): boolean</text>
+<text x="0.0" y="298.5" stroke="none" data-name="VoiceConnection">+isSilentMonitorEnabled(): boolean</text>
+<text x="0.0" y="313.5" stroke="none" data-name="VoiceConnection">+isBargeEnabled(): boolean</text>
+<text x="0.0" y="328.5" stroke="none" data-name="VoiceConnection">+getMonitorCapabilities(): MonitoringMode[] | undefined</text>
+<text x="0.0" y="343.5" stroke="none" data-name="VoiceConnection">+getMonitorStatus(): MonitoringMode | null</text>
+<text x="0.0" y="358.5" stroke="none" data-name="VoiceConnection">+isForcedMute(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="ChatConnection">
+<g fill="#eee8d5" stroke="#33322E" data-name="ChatConnection">
+<rect x="2262.5" y="1123.0" height="205.0" width="435.0" data-name="ChatConnection"></rect>
+<path d="M2262.5 1154.0 L2697.5 1154.0" fill="none" data-name="ChatConnection"></path>
+<path d="M2262.5 1162.0 L2697.5 1162.0" fill="none" data-name="ChatConnection"></path>
+</g>
+<g transform="translate(2262.5, 1123)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ChatConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatConnection">
+<a id="index.ts.ChatConnection" xlink:href="index.ts"><text x="209.5" y="13.5" stroke="none" text-anchor="middle" data-name="ChatConnection">ChatConnection</text></a>
+
+</g>
+</g>
+<g transform="translate(2262.5, 1154)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatConnection">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatConnection">
+
+</g>
+</g>
+<g transform="translate(2262.5, 1162)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatConnection">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatConnection">+getMediaInfo(): ChatMediaInfo</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatConnection">+getConnectionToken(): Promise&lt;ConnectionToken&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChatConnection">+getMediaType(): MediaType.CHAT</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ChatConnection">+getMediaController(): Promise&lt;any&gt;</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ChatConnection">+isSilentMonitor(): boolean</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ChatConnection">+isBarge(): boolean</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ChatConnection">+isSilentMonitorEnabled(): boolean</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ChatConnection">+isBargeEnabled(): boolean</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ChatConnection">+getMonitorCapabilities(): MonitoringMode[]</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ChatConnection">+getMonitorStatus(): MonitoringMode</text>
+
+</g>
+</g>
+</g>
+<g data-name="TaskConnection">
+<g fill="#eee8d5" stroke="#33322E" data-name="TaskConnection">
+<rect x="5488.5" y="1175.5" height="100.0" width="311.0" data-name="TaskConnection"></rect>
+<path d="M5488.5 1206.5 L5799.5 1206.5" fill="none" data-name="TaskConnection"></path>
+<path d="M5488.5 1214.5 L5799.5 1214.5" fill="none" data-name="TaskConnection"></path>
+</g>
+<g transform="translate(5488.5, 1175.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="TaskConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="TaskConnection">
+<a id="index.ts.TaskConnection" xlink:href="index.ts"><text x="147.5" y="13.5" stroke="none" text-anchor="middle" data-name="TaskConnection">TaskConnection</text></a>
+
+</g>
+</g>
+<g transform="translate(5488.5, 1206.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskConnection">
+<g transform="translate(8, 8)" fill="#33322E" data-name="TaskConnection">
+
+</g>
+</g>
+<g transform="translate(5488.5, 1214.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskConnection">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="TaskConnection">
+<text x="0.0" y="13.5" stroke="none" data-name="TaskConnection">+getMediaInfo(): TaskMediaInfo</text>
+<text x="0.0" y="28.5" stroke="none" data-name="TaskConnection">+getMediaType(): MediaType.TASK</text>
+<text x="0.0" y="43.5" stroke="none" data-name="TaskConnection">+getMediaController(): Promise&lt;any&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="StorageAccessCallbacks">
+<g fill="lightblue" stroke="#33322E" data-name="StorageAccessCallbacks">
+<rect x="2667.0" y="431.5" height="115.0" width="319.0" data-name="StorageAccessCallbacks"></rect>
+<path d="M2667.0 462.5 L2986.0 462.5" fill="none" data-name="StorageAccessCallbacks"></path>
+<path d="M2667.0 538.5 L2986.0 538.5" fill="none" data-name="StorageAccessCallbacks"></path>
+</g>
+<g transform="translate(2667, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="StorageAccessCallbacks">
+<a id="index.ts.StorageAccessCallbacks" xlink:href="index.ts"><text x="151.5" y="13.5" stroke="none" text-anchor="middle" data-name="StorageAccessCallbacks">StorageAccessCallbacks</text></a>
+
+</g>
+</g>
+<g transform="translate(2667, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="StorageAccessCallbacks">
+<text x="0.0" y="13.5" stroke="none" data-name="StorageAccessCallbacks">+onInit?: StorageAccessCallback</text>
+<text x="0.0" y="28.5" stroke="none" data-name="StorageAccessCallbacks">+onRequest?: StorageAccessCallback</text>
+<text x="0.0" y="43.5" stroke="none" data-name="StorageAccessCallbacks">+onDeny?: StorageAccessCallback</text>
+<text x="0.0" y="58.5" stroke="none" data-name="StorageAccessCallbacks">+onGrant?: StorageAccessCallback</text>
+
+</g>
+</g>
+<g transform="translate(2667, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" data-name="StorageAccessCallbacks">
+
+</g>
+</g>
+</g>
+<g data-name="StorageAccess">
+<g fill="lightblue" stroke="#33322E" data-name="StorageAccess">
+<rect x="3026.0" y="446.5" height="85.0" width="320.0" data-name="StorageAccess"></rect>
+<path d="M3026.0 477.5 L3346.0 477.5" fill="none" data-name="StorageAccess"></path>
+<path d="M3026.0 485.5 L3346.0 485.5" fill="none" data-name="StorageAccess"></path>
+</g>
+<g transform="translate(3026, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccess">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="StorageAccess">
+<a id="index.ts.StorageAccess" xlink:href="index.ts"><text x="152.0" y="13.5" stroke="none" text-anchor="middle" data-name="StorageAccess">StorageAccess</text></a>
+
+</g>
+</g>
+<g transform="translate(3026, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccess">
+<g transform="translate(8, 8)" fill="#33322E" data-name="StorageAccess">
+
+</g>
+</g>
+<g transform="translate(3026, 485.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccess">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="StorageAccess">
+<text x="0.0" y="13.5" stroke="none" data-name="StorageAccess">+onRequest(): { unsubscribe: Function</text>
+<text x="0.0" y="28.5" stroke="none" data-name="StorageAccess">}</text>
+
+</g>
+</g>
+</g>
+<g data-name="Core">
+<g fill="lightblue" stroke="#33322E" data-name="Core">
+<rect x="3386.0" y="352.5" height="273.0" width="357.0" data-name="Core"></rect>
+<path d="M3386.0 383.5 L3743.0 383.5" fill="none" data-name="Core"></path>
+<path d="M3386.0 414.5 L3743.0 414.5" fill="none" data-name="Core"></path>
+</g>
+<g transform="translate(3386, 352.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Core">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Core">
+<a id="index.ts.Core" xlink:href="index.ts"><text x="170.5" y="13.5" stroke="none" text-anchor="middle" data-name="Core">Core</text></a>
+
+</g>
+</g>
+<g transform="translate(3386, 383.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Core">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Core">
+<text x="0.0" y="13.5" stroke="none" data-name="Core">+upstream?: object | null</text>
+
+</g>
+</g>
+<g transform="translate(3386, 414.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Core">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Core">
+<text x="0.0" y="13.5" stroke="none" data-name="Core">+initCCP(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Core">+onAuthorizeSuccess(): void</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Core">+onIframeRetriesExhausted(): void</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Core">+onCTIAuthorizeRetriesExhausted(): void</text>
+<text x="0.0" y="73.5" stroke="none" data-name="Core">+onAuthorizeRetriesExhausted(): void</text>
+<text x="0.0" y="88.5" stroke="none" data-name="Core">+terminate(): void</text>
+<text x="0.0" y="103.5" stroke="none" data-name="Core">+viewContact(): void</text>
+<text x="0.0" y="118.5" stroke="none" data-name="Core">+onViewContact(): void</text>
+<text x="0.0" y="133.5" stroke="none" data-name="Core">+onAuthFail(): void</text>
+<text x="0.0" y="148.5" stroke="none" data-name="Core">+onAccessDenied(): void</text>
+<text x="0.0" y="163.5" stroke="none" data-name="Core">+getWebSocketManager(): any</text>
+<text x="0.0" y="178.5" stroke="none" data-name="Core">+onInitialized(): void</text>
+<text x="0.0" y="193.5" stroke="none" data-name="Core">+getFrameMediaDevices(): Promise&lt;any[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="AgentApp">
+<g fill="lightblue" stroke="#33322E" data-name="AgentApp">
+<rect x="3783.0" y="420.0" height="138.0" width="257.0" data-name="AgentApp"></rect>
+<path d="M3783.0 451.0 L4040.0 451.0" fill="none" data-name="AgentApp"></path>
+<path d="M3783.0 482.0 L4040.0 482.0" fill="none" data-name="AgentApp"></path>
+</g>
+<g transform="translate(3783, 420)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentApp">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentApp">
+<a id="index.ts.AgentApp" xlink:href="index.ts"><text x="120.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentApp">AgentApp</text></a>
+
+</g>
+</g>
+<g transform="translate(3783, 451)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentApp">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentApp">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentApp">+AppRegistry: AppRegistry</text>
+
+</g>
+</g>
+<g transform="translate(3783, 482)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentApp">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentApp">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentApp">+initCCP(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentApp">+initAppCommunication(): void</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentApp">+initApp(): void</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentApp">+stopApp(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="AppOptions">
+<g fill="lightblue" stroke="#33322E" data-name="AppOptions">
+<rect x="4080.0" y="439.0" height="100.0" width="442.0" data-name="AppOptions"></rect>
+<path d="M4080.0 470.0 L4522.0 470.0" fill="none" data-name="AppOptions"></path>
+<path d="M4080.0 531.0 L4522.0 531.0" fill="none" data-name="AppOptions"></path>
+</g>
+<g transform="translate(4080, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppOptions">
+<a id="index.ts.AppOptions" xlink:href="index.ts"><text x="213.0" y="13.5" stroke="none" text-anchor="middle" data-name="AppOptions">AppOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(4080, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="AppOptions">+ccpParams?: OptionalInitCCPOptions</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AppOptions">+customViewsParams?: OptionalCustomViewsOptions</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AppOptions">+style?: string</text>
+
+</g>
+</g>
+<g transform="translate(4080, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppOptions">
+
+</g>
+</g>
+</g>
+<g data-name="AppRegistry">
+<g fill="lightblue" stroke="#33322E" data-name="AppRegistry">
+<rect x="4562.0" y="439.0" height="100.0" width="141.0" data-name="AppRegistry"></rect>
+<path d="M4562.0 470.0 L4703.0 470.0" fill="none" data-name="AppRegistry"></path>
+<path d="M4562.0 478.0 L4703.0 478.0" fill="none" data-name="AppRegistry"></path>
+</g>
+<g transform="translate(4562, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistry">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppRegistry">
+<a id="index.ts.AppRegistry" xlink:href="index.ts"><text x="62.5" y="13.5" stroke="none" text-anchor="middle" data-name="AppRegistry">AppRegistry</text></a>
+
+</g>
+</g>
+<g transform="translate(4562, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistry">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppRegistry">
+
+</g>
+</g>
+<g transform="translate(4562, 478)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistry">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppRegistry">
+<text x="0.0" y="13.5" stroke="none" data-name="AppRegistry">+register(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AppRegistry">+start(): void</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AppRegistry">+stop(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="AppMethods">
+<g fill="lightblue" stroke="#33322E" data-name="AppMethods">
+<rect x="4743.0" y="446.5" height="85.0" width="140.0" data-name="AppMethods"></rect>
+<path d="M4743.0 477.5 L4883.0 477.5" fill="none" data-name="AppMethods"></path>
+<path d="M4743.0 485.5 L4883.0 485.5" fill="none" data-name="AppMethods"></path>
+</g>
+<g transform="translate(4743, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppMethods">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppMethods">
+<a id="index.ts.AppMethods" xlink:href="index.ts"><text x="62.0" y="13.5" stroke="none" text-anchor="middle" data-name="AppMethods">AppMethods</text></a>
+
+</g>
+</g>
+<g transform="translate(4743, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppMethods">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppMethods">
+
+</g>
+</g>
+<g transform="translate(4743, 485.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppMethods">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppMethods">
+<text x="0.0" y="13.5" stroke="none" data-name="AppMethods">+init(): void</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AppMethods">+destroy(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="AppRegistryOptions">
+<g fill="lightblue" stroke="#33322E" data-name="AppRegistryOptions">
+<rect x="4923.0" y="446.5" height="85.0" width="173.0" data-name="AppRegistryOptions"></rect>
+<path d="M4923.0 477.5 L5096.0 477.5" fill="none" data-name="AppRegistryOptions"></path>
+<path d="M4923.0 523.5 L5096.0 523.5" fill="none" data-name="AppRegistryOptions"></path>
+</g>
+<g transform="translate(4923, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistryOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppRegistryOptions">
+<a id="index.ts.AppRegistryOptions" xlink:href="index.ts"><text x="78.5" y="13.5" stroke="none" text-anchor="middle" data-name="AppRegistryOptions">AppRegistryOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(4923, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistryOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppRegistryOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="AppRegistryOptions">+endpoint: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AppRegistryOptions">+style?: string</text>
+
+</g>
+</g>
+<g transform="translate(4923, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppRegistryOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppRegistryOptions">
+
+</g>
+</g>
+</g>
+<g data-name="ViewContactEvent">
+<g fill="lightblue" stroke="#33322E" data-name="ViewContactEvent">
+<rect x="5136.0" y="454.0" height="70.0" width="159.0" data-name="ViewContactEvent"></rect>
+<path d="M5136.0 485.0 L5295.0 485.0" fill="none" data-name="ViewContactEvent"></path>
+<path d="M5136.0 516.0 L5295.0 516.0" fill="none" data-name="ViewContactEvent"></path>
+</g>
+<g transform="translate(5136, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ViewContactEvent">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ViewContactEvent">
+<a id="index.ts.ViewContactEvent" xlink:href="index.ts"><text x="71.5" y="13.5" stroke="none" text-anchor="middle" data-name="ViewContactEvent">ViewContactEvent</text></a>
+
+</g>
+</g>
+<g transform="translate(5136, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ViewContactEvent">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ViewContactEvent">
+<text x="0.0" y="13.5" stroke="none" data-name="ViewContactEvent">+contactId: string</text>
+
+</g>
+</g>
+<g transform="translate(5136, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ViewContactEvent">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ViewContactEvent">
+
+</g>
+</g>
+</g>
+<g data-name="SoftPhoneOptions">
+<g fill="lightblue" stroke="#33322E" data-name="SoftPhoneOptions">
+<rect x="5335.0" y="401.5" height="175.0" width="403.0" data-name="SoftPhoneOptions"></rect>
+<path d="M5335.0 432.5 L5738.0 432.5" fill="none" data-name="SoftPhoneOptions"></path>
+<path d="M5335.0 568.5 L5738.0 568.5" fill="none" data-name="SoftPhoneOptions"></path>
+</g>
+<g transform="translate(5335, 401.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftPhoneOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SoftPhoneOptions">
+<a id="index.ts.SoftPhoneOptions" xlink:href="index.ts"><text x="193.5" y="13.5" stroke="none" text-anchor="middle" data-name="SoftPhoneOptions">SoftPhoneOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(5335, 432.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftPhoneOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SoftPhoneOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="SoftPhoneOptions">+allowFramedSoftphone?: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SoftPhoneOptions">+disableRingtone?: boolean</text>
+<text x="0.0" y="43.5" stroke="none" data-name="SoftPhoneOptions">+ringtoneUrl?: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="SoftPhoneOptions">+disableEchoCancellation?: boolean</text>
+<text x="0.0" y="73.5" stroke="none" data-name="SoftPhoneOptions">+disableStoringParamsInLocalStorage?: boolean</text>
+<text x="0.0" y="88.5" stroke="none" data-name="SoftPhoneOptions">+allowFramedVideoCall?: boolean</text>
+<text x="0.0" y="103.5" stroke="none" data-name="SoftPhoneOptions">+VDIPlatform?: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="SoftPhoneOptions">+allowEarlyGum?: boolean</text>
+
+</g>
+</g>
+<g transform="translate(5335, 568.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftPhoneOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SoftPhoneOptions">
+
+</g>
+</g>
+</g>
+<g data-name="ChatOptions">
+<g fill="lightblue" stroke="#33322E" data-name="ChatOptions">
+<rect x="5778.0" y="446.5" height="85.0" width="238.0" data-name="ChatOptions"></rect>
+<path d="M5778.0 477.5 L6016.0 477.5" fill="none" data-name="ChatOptions"></path>
+<path d="M5778.0 523.5 L6016.0 523.5" fill="none" data-name="ChatOptions"></path>
+</g>
+<g transform="translate(5778, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatOptions">
+<a id="index.ts.ChatOptions" xlink:href="index.ts"><text x="111.0" y="13.5" stroke="none" text-anchor="middle" data-name="ChatOptions">ChatOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(5778, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatOptions">+disableRingtone?: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatOptions">+ringtoneUrl?: string</text>
+
+</g>
+</g>
+<g transform="translate(5778, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatOptions">
+
+</g>
+</g>
+</g>
+<g data-name="TaskOptions">
+<g fill="lightblue" stroke="#33322E" data-name="TaskOptions">
+<rect x="6056.0" y="446.5" height="85.0" width="238.0" data-name="TaskOptions"></rect>
+<path d="M6056.0 477.5 L6294.0 477.5" fill="none" data-name="TaskOptions"></path>
+<path d="M6056.0 523.5 L6294.0 523.5" fill="none" data-name="TaskOptions"></path>
+</g>
+<g transform="translate(6056, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="TaskOptions">
+<a id="index.ts.TaskOptions" xlink:href="index.ts"><text x="111.0" y="13.5" stroke="none" text-anchor="middle" data-name="TaskOptions">TaskOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(6056, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="TaskOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="TaskOptions">+disableRingtone?: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="TaskOptions">+ringtoneUrl?: string</text>
+
+</g>
+</g>
+<g transform="translate(6056, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="TaskOptions">
+
+</g>
+</g>
+</g>
+<g data-name="LoginOptions">
+<g fill="lightblue" stroke="#33322E" data-name="LoginOptions">
+<rect x="6334.0" y="424.0" height="130.0" width="190.0" data-name="LoginOptions"></rect>
+<path d="M6334.0 455.0 L6524.0 455.0" fill="none" data-name="LoginOptions"></path>
+<path d="M6334.0 546.0 L6524.0 546.0" fill="none" data-name="LoginOptions"></path>
+</g>
+<g transform="translate(6334, 424)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LoginOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="LoginOptions">
+<a id="index.ts.LoginOptions" xlink:href="index.ts"><text x="87.0" y="13.5" stroke="none" text-anchor="middle" data-name="LoginOptions">LoginOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(6334, 455)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LoginOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="LoginOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="LoginOptions">+autoClose?: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="LoginOptions">+height?: number</text>
+<text x="0.0" y="43.5" stroke="none" data-name="LoginOptions">+width?: number</text>
+<text x="0.0" y="58.5" stroke="none" data-name="LoginOptions">+top?: number</text>
+<text x="0.0" y="73.5" stroke="none" data-name="LoginOptions">+left?: number</text>
+
+</g>
+</g>
+<g transform="translate(6334, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LoginOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="LoginOptions">
+
+</g>
+</g>
+</g>
+<g data-name="PageOptions">
+<g fill="lightblue" stroke="#33322E" data-name="PageOptions">
+<rect x="6564.0" y="439.0" height="100.0" width="327.0" data-name="PageOptions"></rect>
+<path d="M6564.0 470.0 L6891.0 470.0" fill="none" data-name="PageOptions"></path>
+<path d="M6564.0 531.0 L6891.0 531.0" fill="none" data-name="PageOptions"></path>
+</g>
+<g transform="translate(6564, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PageOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PageOptions">
+<a id="index.ts.PageOptions" xlink:href="index.ts"><text x="155.5" y="13.5" stroke="none" text-anchor="middle" data-name="PageOptions">PageOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(6564, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PageOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PageOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="PageOptions">+enableAudioDeviceSettings?: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="PageOptions">+enableVideoDeviceSettings?: boolean</text>
+<text x="0.0" y="43.5" stroke="none" data-name="PageOptions">+enablePhoneTypeSettings?: boolean</text>
+
+</g>
+</g>
+<g transform="translate(6564, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PageOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PageOptions">
+
+</g>
+</g>
+</g>
+<g data-name="InitCCPOptions">
+<g fill="lightblue" stroke="#33322E" data-name="InitCCPOptions">
+<rect x="6931.0" y="349.0" height="280.0" width="373.0" data-name="InitCCPOptions"></rect>
+<path d="M6931.0 380.0 L7304.0 380.0" fill="none" data-name="InitCCPOptions"></path>
+<path d="M6931.0 621.0 L7304.0 621.0" fill="none" data-name="InitCCPOptions"></path>
+</g>
+<g transform="translate(6931, 349)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="InitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="InitCCPOptions">
+<a id="index.ts.InitCCPOptions" xlink:href="index.ts"><text x="178.5" y="13.5" stroke="none" text-anchor="middle" data-name="InitCCPOptions">InitCCPOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(6931, 380)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="InitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="InitCCPOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="InitCCPOptions">+ccpUrl: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="InitCCPOptions">+region?: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="InitCCPOptions">+loginPopup?: boolean</text>
+<text x="0.0" y="58.5" stroke="none" data-name="InitCCPOptions">+loginOptions?: LoginOptions</text>
+<text x="0.0" y="73.5" stroke="none" data-name="InitCCPOptions">+loginPopupAutoClose?: boolean</text>
+<text x="0.0" y="88.5" stroke="none" data-name="InitCCPOptions">+loginUrl?: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="InitCCPOptions">+softphone?: SoftPhoneOptions</text>
+<text x="0.0" y="118.5" stroke="none" data-name="InitCCPOptions">+chat?: ChatOptions</text>
+<text x="0.0" y="133.5" stroke="none" data-name="InitCCPOptions">+task?: TaskOptions</text>
+<text x="0.0" y="148.5" stroke="none" data-name="InitCCPOptions">+iframeTitle?: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="InitCCPOptions">+pageOptions?: PageOptions</text>
+<text x="0.0" y="178.5" stroke="none" data-name="InitCCPOptions">+ccpAckTimeout?: number</text>
+<text x="0.0" y="193.5" stroke="none" data-name="InitCCPOptions">+ccpSynTimeout?: number</text>
+<text x="0.0" y="208.5" stroke="none" data-name="InitCCPOptions">+ccpLoadTimeout?: number</text>
+<text x="0.0" y="223.5" stroke="none" data-name="InitCCPOptions">+storageAccess?: StorageAccessParameters</text>
+
+</g>
+</g>
+<g transform="translate(6931, 621)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="InitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="InitCCPOptions">
+
+</g>
+</g>
+</g>
+<g data-name="TerminateCustomViewOptions">
+<g fill="lightblue" stroke="#33322E" data-name="TerminateCustomViewOptions">
+<rect x="7344.0" y="439.0" height="100.0" width="253.0" data-name="TerminateCustomViewOptions"></rect>
+<path d="M7344.0 470.0 L7597.0 470.0" fill="none" data-name="TerminateCustomViewOptions"></path>
+<path d="M7344.0 531.0 L7597.0 531.0" fill="none" data-name="TerminateCustomViewOptions"></path>
+</g>
+<g transform="translate(7344, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TerminateCustomViewOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="TerminateCustomViewOptions">
+<a id="index.ts.TerminateCustomViewOptions" xlink:href="index.ts"><text x="118.5" y="13.5" stroke="none" text-anchor="middle" data-name="TerminateCustomViewOptions">TerminateCustomViewOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(7344, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TerminateCustomViewOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="TerminateCustomViewOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="TerminateCustomViewOptions">+resolveIframe: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="TerminateCustomViewOptions">+timeout?: number</text>
+<text x="0.0" y="43.5" stroke="none" data-name="TerminateCustomViewOptions">+hideIframe?: boolean</text>
+
+</g>
+</g>
+<g transform="translate(7344, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TerminateCustomViewOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="TerminateCustomViewOptions">
+
+</g>
+</g>
+</g>
+<g data-name="OptionalCustomViewsOptions">
+<g fill="lightblue" stroke="#33322E" data-name="OptionalCustomViewsOptions">
+<rect x="7637.0" y="424.0" height="130.0" width="515.0" data-name="OptionalCustomViewsOptions"></rect>
+<path d="M7637.0 455.0 L8152.0 455.0" fill="none" data-name="OptionalCustomViewsOptions"></path>
+<path d="M7637.0 546.0 L8152.0 546.0" fill="none" data-name="OptionalCustomViewsOptions"></path>
+</g>
+<g transform="translate(7637, 424)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalCustomViewsOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OptionalCustomViewsOptions">
+<a id="index.ts.OptionalCustomViewsOptions" xlink:href="index.ts"><text x="249.5" y="13.5" stroke="none" text-anchor="middle" data-name="OptionalCustomViewsOptions">OptionalCustomViewsOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(7637, 455)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalCustomViewsOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OptionalCustomViewsOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="OptionalCustomViewsOptions">+contact?: string | Contact</text>
+<text x="0.0" y="28.5" stroke="none" data-name="OptionalCustomViewsOptions">+contactFlowId?: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="OptionalCustomViewsOptions">+iframeSuffix?: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="OptionalCustomViewsOptions">+disableAutoDestroy?: boolean</text>
+<text x="0.0" y="73.5" stroke="none" data-name="OptionalCustomViewsOptions">+terminateCustomViewOptions?: TerminateCustomViewOptions</text>
+
+</g>
+</g>
+<g transform="translate(7637, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalCustomViewsOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="OptionalCustomViewsOptions">
+
+</g>
+</g>
+</g>
+<g data-name="OptionalInitCCPOptions">
+<g fill="lightblue" stroke="#33322E" data-name="OptionalInitCCPOptions">
+<rect x="8192.0" y="379.0" height="220.0" width="280.0" data-name="OptionalInitCCPOptions"></rect>
+<path d="M8192.0 410.0 L8472.0 410.0" fill="none" data-name="OptionalInitCCPOptions"></path>
+<path d="M8192.0 591.0 L8472.0 591.0" fill="none" data-name="OptionalInitCCPOptions"></path>
+</g>
+<g transform="translate(8192, 379)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalInitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="OptionalInitCCPOptions">
+<a id="index.ts.OptionalInitCCPOptions" xlink:href="index.ts"><text x="132.0" y="13.5" stroke="none" text-anchor="middle" data-name="OptionalInitCCPOptions">OptionalInitCCPOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(8192, 410)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalInitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="OptionalInitCCPOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="OptionalInitCCPOptions">+region?: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="OptionalInitCCPOptions">+loginPopup?: boolean</text>
+<text x="0.0" y="43.5" stroke="none" data-name="OptionalInitCCPOptions">+loginOptions?: LoginOptions</text>
+<text x="0.0" y="58.5" stroke="none" data-name="OptionalInitCCPOptions">+loginPopupAutoClose?: boolean</text>
+<text x="0.0" y="73.5" stroke="none" data-name="OptionalInitCCPOptions">+loginUrl?: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="OptionalInitCCPOptions">+softphone?: SoftPhoneOptions</text>
+<text x="0.0" y="103.5" stroke="none" data-name="OptionalInitCCPOptions">+chat?: ChatOptions</text>
+<text x="0.0" y="118.5" stroke="none" data-name="OptionalInitCCPOptions">+pageOptions?: PageOptions</text>
+<text x="0.0" y="133.5" stroke="none" data-name="OptionalInitCCPOptions">+ccpAckTimeout?: number</text>
+<text x="0.0" y="148.5" stroke="none" data-name="OptionalInitCCPOptions">+ccpSynTimeout?: number</text>
+<text x="0.0" y="163.5" stroke="none" data-name="OptionalInitCCPOptions">+ccpLoadTimeout?: number</text>
+
+</g>
+</g>
+<g transform="translate(8192, 591)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="OptionalInitCCPOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="OptionalInitCCPOptions">
+
+</g>
+</g>
+</g>
+<g data-name="SuccessFailOptions">
+<g fill="lightblue" stroke="#33322E" data-name="SuccessFailOptions">
+<rect x="8512.0" y="446.5" height="85.0" width="332.0" data-name="SuccessFailOptions"></rect>
+<path d="M8512.0 477.5 L8844.0 477.5" fill="none" data-name="SuccessFailOptions"></path>
+<path d="M8512.0 523.5 L8844.0 523.5" fill="none" data-name="SuccessFailOptions"></path>
+</g>
+<g transform="translate(8512, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SuccessFailOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SuccessFailOptions">
+<a id="index.ts.SuccessFailOptions" xlink:href="index.ts"><text x="158.0" y="13.5" stroke="none" text-anchor="middle" data-name="SuccessFailOptions">SuccessFailOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(8512, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SuccessFailOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SuccessFailOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="SuccessFailOptions">+success?: SuccessFailCallback&lt;[]&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SuccessFailOptions">+failure?: SuccessFailCallback&lt;[string]&gt;</text>
+
+</g>
+</g>
+<g transform="translate(8512, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SuccessFailOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SuccessFailOptions">
+
+</g>
+</g>
+</g>
+<g data-name="ConnectOptions">
+<g fill="lightblue" stroke="#33322E" data-name="ConnectOptions">
+<rect x="8590.5" y="1190.5" height="70.0" width="175.0" data-name="ConnectOptions"></rect>
+<path d="M8590.5 1221.5 L8765.5 1221.5" fill="none" data-name="ConnectOptions"></path>
+<path d="M8590.5 1252.5 L8765.5 1252.5" fill="none" data-name="ConnectOptions"></path>
+</g>
+<g transform="translate(8590.5, 1190.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ConnectOptions">
+<a id="index.ts.ConnectOptions" xlink:href="index.ts"><text x="79.5" y="13.5" stroke="none" text-anchor="middle" data-name="ConnectOptions">ConnectOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(8590.5, 1221.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ConnectOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="ConnectOptions">+queueARN?: string</text>
+
+</g>
+</g>
+<g transform="translate(8590.5, 1252.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ConnectOptions">
+
+</g>
+</g>
+</g>
+<g data-name="AgentSetStateOptions">
+<g fill="lightblue" stroke="#33322E" data-name="AgentSetStateOptions">
+<rect x="8884.0" y="454.0" height="70.0" width="257.0" data-name="AgentSetStateOptions"></rect>
+<path d="M8884.0 485.0 L9141.0 485.0" fill="none" data-name="AgentSetStateOptions"></path>
+<path d="M8884.0 516.0 L9141.0 516.0" fill="none" data-name="AgentSetStateOptions"></path>
+</g>
+<g transform="translate(8884, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentSetStateOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentSetStateOptions">
+<a id="index.ts.AgentSetStateOptions" xlink:href="index.ts"><text x="120.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentSetStateOptions">AgentSetStateOptions</text></a>
+
+</g>
+</g>
+<g transform="translate(8884, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentSetStateOptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentSetStateOptions">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentSetStateOptions">+enqueueNextState?: boolean</text>
+
+</g>
+</g>
+<g transform="translate(8884, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentSetStateOptions">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentSetStateOptions">
+
+</g>
+</g>
+</g>
+<g data-name="AgentMutedStatus">
+<g fill="lightblue" stroke="#33322E" data-name="AgentMutedStatus">
+<rect x="9181.0" y="454.0" height="70.0" width="161.0" data-name="AgentMutedStatus"></rect>
+<path d="M9181.0 485.0 L9342.0 485.0" fill="none" data-name="AgentMutedStatus"></path>
+<path d="M9181.0 516.0 L9342.0 516.0" fill="none" data-name="AgentMutedStatus"></path>
+</g>
+<g transform="translate(9181, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentMutedStatus">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentMutedStatus">
+<a id="index.ts.AgentMutedStatus" xlink:href="index.ts"><text x="72.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentMutedStatus">AgentMutedStatus</text></a>
+
+</g>
+</g>
+<g transform="translate(9181, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentMutedStatus">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentMutedStatus">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentMutedStatus">+muted: boolean</text>
+
+</g>
+</g>
+<g transform="translate(9181, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentMutedStatus">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentMutedStatus">
+
+</g>
+</g>
+</g>
+<g data-name="AgentStateChange">
+<g fill="lightblue" stroke="#33322E" data-name="AgentStateChange">
+<rect x="9382.0" y="439.0" height="100.0" width="165.0" data-name="AgentStateChange"></rect>
+<path d="M9382.0 470.0 L9547.0 470.0" fill="none" data-name="AgentStateChange"></path>
+<path d="M9382.0 531.0 L9547.0 531.0" fill="none" data-name="AgentStateChange"></path>
+</g>
+<g transform="translate(9382, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentStateChange">
+<a id="index.ts.AgentStateChange" xlink:href="index.ts"><text x="74.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentStateChange">AgentStateChange</text></a>
+
+</g>
+</g>
+<g transform="translate(9382, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentStateChange">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentStateChange">+agent: Agent</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentStateChange">+oldState: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentStateChange">+newState: string</text>
+
+</g>
+</g>
+<g transform="translate(9382, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateChange">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentStateChange">
+
+</g>
+</g>
+</g>
+<g data-name="AgentStateDefinition">
+<g fill="lightblue" stroke="#33322E" data-name="AgentStateDefinition">
+<rect x="9587.0" y="439.0" height="100.0" width="201.0" data-name="AgentStateDefinition"></rect>
+<path d="M9587.0 470.0 L9788.0 470.0" fill="none" data-name="AgentStateDefinition"></path>
+<path d="M9587.0 531.0 L9788.0 531.0" fill="none" data-name="AgentStateDefinition"></path>
+</g>
+<g transform="translate(9587, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateDefinition">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentStateDefinition">
+<a id="index.ts.AgentStateDefinition" xlink:href="index.ts"><text x="92.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentStateDefinition">AgentStateDefinition</text></a>
+
+</g>
+</g>
+<g transform="translate(9587, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateDefinition">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentStateDefinition">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentStateDefinition">+agentStateARN: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentStateDefinition">+type: AgentStateType</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentStateDefinition">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(9587, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateDefinition">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentStateDefinition">
+
+</g>
+</g>
+</g>
+<g data-name="AgentPreferences">
+<g fill="lightblue" stroke="#33322E" data-name="AgentPreferences">
+<rect x="9828.0" y="454.0" height="70.0" width="158.0" data-name="AgentPreferences"></rect>
+<path d="M9828.0 485.0 L9986.0 485.0" fill="none" data-name="AgentPreferences"></path>
+<path d="M9828.0 516.0 L9986.0 516.0" fill="none" data-name="AgentPreferences"></path>
+</g>
+<g transform="translate(9828, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentPreferences">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentPreferences">
+<a id="index.ts.AgentPreferences" xlink:href="index.ts"><text x="71.0" y="13.5" stroke="none" text-anchor="middle" data-name="AgentPreferences">AgentPreferences</text></a>
+
+</g>
+</g>
+<g transform="translate(9828, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentPreferences">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentPreferences">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentPreferences">+locale?: string</text>
+
+</g>
+</g>
+<g transform="translate(9828, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentPreferences">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentPreferences">
+
+</g>
+</g>
+</g>
+<g data-name="UserMediaDeviceChange">
+<g fill="lightblue" stroke="#33322E" data-name="UserMediaDeviceChange">
+<rect x="10026.0" y="454.0" height="70.0" width="217.0" data-name="UserMediaDeviceChange"></rect>
+<path d="M10026.0 485.0 L10243.0 485.0" fill="none" data-name="UserMediaDeviceChange"></path>
+<path d="M10026.0 516.0 L10243.0 516.0" fill="none" data-name="UserMediaDeviceChange"></path>
+</g>
+<g transform="translate(10026, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserMediaDeviceChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserMediaDeviceChange">
+<a id="index.ts.UserMediaDeviceChange" xlink:href="index.ts"><text x="100.5" y="13.5" stroke="none" text-anchor="middle" data-name="UserMediaDeviceChange">UserMediaDeviceChange</text></a>
+
+</g>
+</g>
+<g transform="translate(10026, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserMediaDeviceChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserMediaDeviceChange">
+<text x="0.0" y="13.5" stroke="none" data-name="UserMediaDeviceChange">+deviceId: string</text>
+
+</g>
+</g>
+<g transform="translate(10026, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserMediaDeviceChange">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UserMediaDeviceChange">
+
+</g>
+</g>
+</g>
+<g data-name="UserBackgroundBlurChange">
+<g fill="lightblue" stroke="#33322E" data-name="UserBackgroundBlurChange">
+<rect x="10283.0" y="454.0" height="70.0" width="304.0" data-name="UserBackgroundBlurChange"></rect>
+<path d="M10283.0 485.0 L10587.0 485.0" fill="none" data-name="UserBackgroundBlurChange"></path>
+<path d="M10283.0 516.0 L10587.0 516.0" fill="none" data-name="UserBackgroundBlurChange"></path>
+</g>
+<g transform="translate(10283, 454)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserBackgroundBlurChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserBackgroundBlurChange">
+<a id="index.ts.UserBackgroundBlurChange" xlink:href="index.ts"><text x="144.0" y="13.5" stroke="none" text-anchor="middle" data-name="UserBackgroundBlurChange">UserBackgroundBlurChange</text></a>
+
+</g>
+</g>
+<g transform="translate(10283, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserBackgroundBlurChange">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserBackgroundBlurChange">
+<text x="0.0" y="13.5" stroke="none" data-name="UserBackgroundBlurChange">+isBackgroundBlurEnabled: boolean</text>
+
+</g>
+</g>
+<g transform="translate(10283, 516)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserBackgroundBlurChange">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UserBackgroundBlurChange">
+
+</g>
+</g>
+</g>
+<g data-name="TaskContactDefinition">
+<g fill="lightblue" stroke="#33322E" data-name="TaskContactDefinition">
+<rect x="10627.0" y="409.0" height="160.0" width="282.0" data-name="TaskContactDefinition"></rect>
+<path d="M10627.0 440.0 L10909.0 440.0" fill="none" data-name="TaskContactDefinition"></path>
+<path d="M10627.0 561.0 L10909.0 561.0" fill="none" data-name="TaskContactDefinition"></path>
+</g>
+<g transform="translate(10627, 409)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskContactDefinition">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="TaskContactDefinition">
+<a id="index.ts.TaskContactDefinition" xlink:href="index.ts"><text x="133.0" y="13.5" stroke="none" text-anchor="middle" data-name="TaskContactDefinition">TaskContactDefinition</text></a>
+
+</g>
+</g>
+<g transform="translate(10627, 440)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskContactDefinition">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="TaskContactDefinition">
+<text x="0.0" y="13.5" stroke="none" data-name="TaskContactDefinition">+endpoint: Endpoint</text>
+<text x="0.0" y="28.5" stroke="none" data-name="TaskContactDefinition">+previousContactId?: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="TaskContactDefinition">+name: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="TaskContactDefinition">+description: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="TaskContactDefinition">+references: ReferenceDictionary</text>
+<text x="0.0" y="88.5" stroke="none" data-name="TaskContactDefinition">+scheduledTime: number</text>
+<text x="0.0" y="103.5" stroke="none" data-name="TaskContactDefinition">+idempotencyToken: string</text>
+
+</g>
+</g>
+<g transform="translate(10627, 561)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskContactDefinition">
+<g transform="translate(8, 8)" fill="#33322E" data-name="TaskContactDefinition">
+
+</g>
+</g>
+</g>
+<g data-name="AgentAvailabilityState">
+<g fill="lightblue" stroke="#33322E" data-name="AgentAvailabilityState">
+<rect x="10949.0" y="446.5" height="85.0" width="187.0" data-name="AgentAvailabilityState"></rect>
+<path d="M10949.0 477.5 L11136.0 477.5" fill="none" data-name="AgentAvailabilityState"></path>
+<path d="M10949.0 523.5 L11136.0 523.5" fill="none" data-name="AgentAvailabilityState"></path>
+</g>
+<g transform="translate(10949, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentAvailabilityState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentAvailabilityState">
+<a id="index.ts.AgentAvailabilityState" xlink:href="index.ts"><text x="85.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentAvailabilityState">AgentAvailabilityState</text></a>
+
+</g>
+</g>
+<g transform="translate(10949, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentAvailabilityState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentAvailabilityState">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentAvailabilityState">+state: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentAvailabilityState">+timeStamp: Date</text>
+
+</g>
+</g>
+<g transform="translate(10949, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentAvailabilityState">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentAvailabilityState">
+
+</g>
+</g>
+</g>
+<g data-name="AgentState">
+<g fill="lightblue" stroke="#33322E" data-name="AgentState">
+<rect x="11176.0" y="431.5" height="115.0" width="244.0" data-name="AgentState"></rect>
+<path d="M11176.0 462.5 L11420.0 462.5" fill="none" data-name="AgentState"></path>
+<path d="M11176.0 538.5 L11420.0 538.5" fill="none" data-name="AgentState"></path>
+</g>
+<g transform="translate(11176, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentState">
+<a id="index.ts.AgentState" xlink:href="index.ts"><text x="114.0" y="13.5" stroke="none" text-anchor="middle" data-name="AgentState">AgentState</text></a>
+
+</g>
+</g>
+<g transform="translate(11176, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentState">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentState">+agentStateARN: string | null</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentState">+name: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentState">+startTimestamp: Date</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentState">+type: AgentStateType</text>
+
+</g>
+</g>
+<g transform="translate(11176, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentState">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentState">
+
+</g>
+</g>
+</g>
+<g data-name="AgentConfiguration">
+<g fill="lightblue" stroke="#33322E" data-name="AgentConfiguration">
+<rect x="11460.0" y="379.0" height="220.0" width="329.0" data-name="AgentConfiguration"></rect>
+<path d="M11460.0 410.0 L11789.0 410.0" fill="none" data-name="AgentConfiguration"></path>
+<path d="M11460.0 591.0 L11789.0 591.0" fill="none" data-name="AgentConfiguration"></path>
+</g>
+<g transform="translate(11460, 379)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentConfiguration">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentConfiguration">
+<a id="index.ts.AgentConfiguration" xlink:href="index.ts"><text x="156.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentConfiguration">AgentConfiguration</text></a>
+
+</g>
+</g>
+<g transform="translate(11460, 410)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentConfiguration">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentConfiguration">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentConfiguration">+agentStates: AgentStateDefinition[]</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentConfiguration">+agentPreferences?: AgentPreferences</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentConfiguration">+dialableCountries: string[]</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentConfiguration">+extension: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AgentConfiguration">+name: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AgentConfiguration">+permissions: string[]</text>
+<text x="0.0" y="103.5" stroke="none" data-name="AgentConfiguration">+routingProfile: AgentRoutingProfile</text>
+<text x="0.0" y="118.5" stroke="none" data-name="AgentConfiguration">+softphoneAutoAccept: boolean</text>
+<text x="0.0" y="133.5" stroke="none" data-name="AgentConfiguration">+softphoneEnabled: boolean</text>
+<text x="0.0" y="148.5" stroke="none" data-name="AgentConfiguration">+username: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="AgentConfiguration">+agentARN: string</text>
+
+</g>
+</g>
+<g transform="translate(11460, 591)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentConfiguration">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentConfiguration">
+
+</g>
+</g>
+</g>
+<g data-name="AgentRoutingProfile">
+<g fill="lightblue" stroke="#33322E" data-name="AgentRoutingProfile">
+<rect x="11829.0" y="416.5" height="145.0" width="481.0" data-name="AgentRoutingProfile"></rect>
+<path d="M11829.0 447.5 L12310.0 447.5" fill="none" data-name="AgentRoutingProfile"></path>
+<path d="M11829.0 553.5 L12310.0 553.5" fill="none" data-name="AgentRoutingProfile"></path>
+</g>
+<g transform="translate(11829, 416.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentRoutingProfile">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentRoutingProfile">
+<a id="index.ts.AgentRoutingProfile" xlink:href="index.ts"><text x="232.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentRoutingProfile">AgentRoutingProfile</text></a>
+
+</g>
+</g>
+<g transform="translate(11829, 447.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentRoutingProfile">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentRoutingProfile">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentRoutingProfile">+channelConcurrencyMap: AgentChannelConcurrencyMap</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentRoutingProfile">+defaultOutboundQueue: Queue</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentRoutingProfile">+name: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentRoutingProfile">+queues: Queue[]</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AgentRoutingProfile">+routingProfileARN: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AgentRoutingProfile">+routingProfileId: string</text>
+
+</g>
+</g>
+<g transform="translate(11829, 553.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentRoutingProfile">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AgentRoutingProfile">
+
+</g>
+</g>
+</g>
+<g data-name="GetEndpointsResult">
+<g fill="lightblue" stroke="#33322E" data-name="GetEndpointsResult">
+<rect x="12350.0" y="446.5" height="85.0" width="199.0" data-name="GetEndpointsResult"></rect>
+<path d="M12350.0 477.5 L12549.0 477.5" fill="none" data-name="GetEndpointsResult"></path>
+<path d="M12350.0 523.5 L12549.0 523.5" fill="none" data-name="GetEndpointsResult"></path>
+</g>
+<g transform="translate(12350, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsResult">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="GetEndpointsResult">
+<a id="index.ts.GetEndpointsResult" xlink:href="index.ts"><text x="91.5" y="13.5" stroke="none" text-anchor="middle" data-name="GetEndpointsResult">GetEndpointsResult</text></a>
+
+</g>
+</g>
+<g transform="translate(12350, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsResult">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="GetEndpointsResult">
+<text x="0.0" y="13.5" stroke="none" data-name="GetEndpointsResult">+endpoints: Endpoint[]</text>
+<text x="0.0" y="28.5" stroke="none" data-name="GetEndpointsResult">+addresses: Endpoint[]</text>
+
+</g>
+</g>
+<g transform="translate(12350, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsResult">
+<g transform="translate(8, 8)" fill="#33322E" data-name="GetEndpointsResult">
+
+</g>
+</g>
+</g>
+<g data-name="GetEndpointsCallbacks">
+<g fill="lightblue" stroke="#33322E" data-name="GetEndpointsCallbacks">
+<rect x="12589.0" y="446.5" height="85.0" width="451.0" data-name="GetEndpointsCallbacks"></rect>
+<path d="M12589.0 477.5 L13040.0 477.5" fill="none" data-name="GetEndpointsCallbacks"></path>
+<path d="M12589.0 523.5 L13040.0 523.5" fill="none" data-name="GetEndpointsCallbacks"></path>
+</g>
+<g transform="translate(12589, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="GetEndpointsCallbacks">
+<a id="index.ts.GetEndpointsCallbacks" xlink:href="index.ts"><text x="217.5" y="13.5" stroke="none" text-anchor="middle" data-name="GetEndpointsCallbacks">GetEndpointsCallbacks</text></a>
+
+</g>
+</g>
+<g transform="translate(12589, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="GetEndpointsCallbacks">
+<text x="0.0" y="13.5" stroke="none" data-name="GetEndpointsCallbacks">+success: SuccessFailCallback&lt;[GetEndpointsResult]&gt;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="GetEndpointsCallbacks">+failure?: SuccessFailCallback&lt;[string]&gt;</text>
+
+</g>
+</g>
+<g transform="translate(12589, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GetEndpointsCallbacks">
+<g transform="translate(8, 8)" fill="#33322E" data-name="GetEndpointsCallbacks">
+
+</g>
+</g>
+</g>
+<g data-name="AttributeDictionary">
+<g fill="lightblue" stroke="#33322E" data-name="AttributeDictionary">
+<rect x="13080.0" y="465.5" height="47.0" width="161.0" data-name="AttributeDictionary"></rect>
+<path d="M13080.0 496.5 L13241.0 496.5" fill="none" data-name="AttributeDictionary"></path>
+<path d="M13080.0 504.5 L13241.0 504.5" fill="none" data-name="AttributeDictionary"></path>
+</g>
+<g transform="translate(13080, 465.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AttributeDictionary">
+<a id="index.ts.AttributeDictionary" xlink:href="index.ts"><text x="72.5" y="13.5" stroke="none" text-anchor="middle" data-name="AttributeDictionary">AttributeDictionary</text></a>
+
+</g>
+</g>
+<g transform="translate(13080, 496.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AttributeDictionary">
+
+</g>
+</g>
+<g transform="translate(13080, 504.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AttributeDictionary">
+
+</g>
+</g>
+</g>
+<g data-name="SegmentAttributeDictionary">
+<g fill="lightblue" stroke="#33322E" data-name="SegmentAttributeDictionary">
+<rect x="13281.0" y="465.5" height="47.0" width="231.0" data-name="SegmentAttributeDictionary"></rect>
+<path d="M13281.0 496.5 L13512.0 496.5" fill="none" data-name="SegmentAttributeDictionary"></path>
+<path d="M13281.0 504.5 L13512.0 504.5" fill="none" data-name="SegmentAttributeDictionary"></path>
+</g>
+<g transform="translate(13281, 465.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SegmentAttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SegmentAttributeDictionary">
+<a id="index.ts.SegmentAttributeDictionary" xlink:href="index.ts"><text x="107.5" y="13.5" stroke="none" text-anchor="middle" data-name="SegmentAttributeDictionary">SegmentAttributeDictionary</text></a>
+
+</g>
+</g>
+<g transform="translate(13281, 496.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SegmentAttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SegmentAttributeDictionary">
+
+</g>
+</g>
+<g transform="translate(13281, 504.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SegmentAttributeDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SegmentAttributeDictionary">
+
+</g>
+</g>
+</g>
+<g data-name="ReferenceDictionary">
+<g fill="lightblue" stroke="#33322E" data-name="ReferenceDictionary">
+<rect x="13552.0" y="465.5" height="47.0" width="177.0" data-name="ReferenceDictionary"></rect>
+<path d="M13552.0 496.5 L13729.0 496.5" fill="none" data-name="ReferenceDictionary"></path>
+<path d="M13552.0 504.5 L13729.0 504.5" fill="none" data-name="ReferenceDictionary"></path>
+</g>
+<g transform="translate(13552, 465.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ReferenceDictionary">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ReferenceDictionary">
+<a id="index.ts.ReferenceDictionary" xlink:href="index.ts"><text x="80.5" y="13.5" stroke="none" text-anchor="middle" data-name="ReferenceDictionary">ReferenceDictionary</text></a>
+
+</g>
+</g>
+<g transform="translate(13552, 496.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ReferenceDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ReferenceDictionary">
+
+</g>
+</g>
+<g transform="translate(13552, 504.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ReferenceDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ReferenceDictionary">
+
+</g>
+</g>
+</g>
+<g data-name="ChannelContext">
+<g fill="lightblue" stroke="#33322E" data-name="ChannelContext">
+<rect x="13769.0" y="439.0" height="100.0" width="272.0" data-name="ChannelContext"></rect>
+<path d="M13769.0 470.0 L14041.0 470.0" fill="none" data-name="ChannelContext"></path>
+<path d="M13769.0 531.0 L14041.0 531.0" fill="none" data-name="ChannelContext"></path>
+</g>
+<g transform="translate(13769, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChannelContext">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChannelContext">
+<a id="index.ts.ChannelContext" xlink:href="index.ts"><text x="128.0" y="13.5" stroke="none" text-anchor="middle" data-name="ChannelContext">ChannelContext</text></a>
+
+</g>
+</g>
+<g transform="translate(13769, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChannelContext">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChannelContext">
+<text x="0.0" y="13.5" stroke="none" data-name="ChannelContext">+scheduledTime?: number</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChannelContext">+taskTemplateId?: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChannelContext">+taskTemplateVersion?: number</text>
+
+</g>
+</g>
+<g transform="translate(13769, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChannelContext">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChannelContext">
+
+</g>
+</g>
+</g>
+<g data-name="QuickResponsesQuery">
+<g fill="lightblue" stroke="#33322E" data-name="QuickResponsesQuery">
+<rect x="14081.0" y="431.5" height="115.0" width="210.0" data-name="QuickResponsesQuery"></rect>
+<path d="M14081.0 462.5 L14291.0 462.5" fill="none" data-name="QuickResponsesQuery"></path>
+<path d="M14081.0 538.5 L14291.0 538.5" fill="none" data-name="QuickResponsesQuery"></path>
+</g>
+<g transform="translate(14081, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponsesQuery">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="QuickResponsesQuery">
+<a id="index.ts.QuickResponsesQuery" xlink:href="index.ts"><text x="97.0" y="13.5" stroke="none" text-anchor="middle" data-name="QuickResponsesQuery">QuickResponsesQuery</text></a>
+
+</g>
+</g>
+<g transform="translate(14081, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponsesQuery">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="QuickResponsesQuery">
+<text x="0.0" y="13.5" stroke="none" data-name="QuickResponsesQuery">+query: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="QuickResponsesQuery">+contactId?: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="QuickResponsesQuery">+nextToken?: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="QuickResponsesQuery">+debounceMS?: number</text>
+
+</g>
+</g>
+<g transform="translate(14081, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponsesQuery">
+<g transform="translate(8, 8)" fill="#33322E" data-name="QuickResponsesQuery">
+
+</g>
+</g>
+</g>
+<g data-name="SearchQuickResponsesResult">
+<g fill="lightblue" stroke="#33322E" data-name="SearchQuickResponsesResult">
+<rect x="14331.0" y="446.5" height="85.0" width="256.0" data-name="SearchQuickResponsesResult"></rect>
+<path d="M14331.0 477.5 L14587.0 477.5" fill="none" data-name="SearchQuickResponsesResult"></path>
+<path d="M14331.0 523.5 L14587.0 523.5" fill="none" data-name="SearchQuickResponsesResult"></path>
+</g>
+<g transform="translate(14331, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SearchQuickResponsesResult">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SearchQuickResponsesResult">
+<a id="index.ts.SearchQuickResponsesResult" xlink:href="index.ts"><text x="120.0" y="13.5" stroke="none" text-anchor="middle" data-name="SearchQuickResponsesResult">SearchQuickResponsesResult</text></a>
+
+</g>
+</g>
+<g transform="translate(14331, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SearchQuickResponsesResult">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SearchQuickResponsesResult">
+<text x="0.0" y="13.5" stroke="none" data-name="SearchQuickResponsesResult">+results: QuickResponse[]</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SearchQuickResponsesResult">+nextToken?: string</text>
+
+</g>
+</g>
+<g transform="translate(14331, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SearchQuickResponsesResult">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SearchQuickResponsesResult">
+
+</g>
+</g>
+</g>
+<g data-name="QuickResponse">
+<g fill="lightblue" stroke="#33322E" data-name="QuickResponse">
+<rect x="14627.0" y="304.0" height="370.0" width="430.0" data-name="QuickResponse"></rect>
+<path d="M14627.0 335.0 L15057.0 335.0" fill="none" data-name="QuickResponse"></path>
+<path d="M14627.0 666.0 L15057.0 666.0" fill="none" data-name="QuickResponse"></path>
+</g>
+<g transform="translate(14627, 304)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponse">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="QuickResponse">
+<a id="index.ts.QuickResponse" xlink:href="index.ts"><text x="207.0" y="13.5" stroke="none" text-anchor="middle" data-name="QuickResponse">QuickResponse</text></a>
+
+</g>
+</g>
+<g transform="translate(14627, 335)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponse">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="QuickResponse">
+<text x="0.0" y="13.5" stroke="none" data-name="QuickResponse">+quickResponseArn: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="QuickResponse">+quickResponseId: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="QuickResponse">+knowledgeBaseArn: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="QuickResponse">+knowledgeBaseId: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="QuickResponse">+name: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="QuickResponse">+version: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="QuickResponse">+contentType: QuickResponseContentType</text>
+<text x="0.0" y="118.5" stroke="none" data-name="QuickResponse">+status: QuickResponseStatusType</text>
+<text x="0.0" y="133.5" stroke="none" data-name="QuickResponse">+statusReason: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="QuickResponse">+createdTime: number</text>
+<text x="0.0" y="163.5" stroke="none" data-name="QuickResponse">+lastModifiedTime: number</text>
+<text x="0.0" y="178.5" stroke="none" data-name="QuickResponse">+title?: string</text>
+<text x="0.0" y="193.5" stroke="none" data-name="QuickResponse">+contents: QuickResponseContentsType</text>
+<text x="0.0" y="208.5" stroke="none" data-name="QuickResponse">+description?: string</text>
+<text x="0.0" y="223.5" stroke="none" data-name="QuickResponse">+groupingConfiguration: GroupingConfigurationType</text>
+<text x="0.0" y="238.5" stroke="none" data-name="QuickResponse">+shortcutKey?: string</text>
+<text x="0.0" y="253.5" stroke="none" data-name="QuickResponse">+lastModifiedBy: string</text>
+<text x="0.0" y="268.5" stroke="none" data-name="QuickResponse">+isActive: boolean</text>
+<text x="0.0" y="283.5" stroke="none" data-name="QuickResponse">+channels: QuickResponseChannels</text>
+<text x="0.0" y="298.5" stroke="none" data-name="QuickResponse">+language: string</text>
+<text x="0.0" y="313.5" stroke="none" data-name="QuickResponse">+tags: Tags</text>
+
+</g>
+</g>
+<g transform="translate(14627, 666)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponse">
+<g transform="translate(8, 8)" fill="#33322E" data-name="QuickResponse">
+
+</g>
+</g>
+</g>
+<g data-name="ContactState">
+<g fill="lightblue" stroke="#33322E" data-name="ContactState">
+<rect x="15097.0" y="446.5" height="85.0" width="211.0" data-name="ContactState"></rect>
+<path d="M15097.0 477.5 L15308.0 477.5" fill="none" data-name="ContactState"></path>
+<path d="M15097.0 523.5 L15308.0 523.5" fill="none" data-name="ContactState"></path>
+</g>
+<g transform="translate(15097, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ContactState">
+<a id="index.ts.ContactState" xlink:href="index.ts"><text x="97.5" y="13.5" stroke="none" text-anchor="middle" data-name="ContactState">ContactState</text></a>
+
+</g>
+</g>
+<g transform="translate(15097, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ContactState">
+<text x="0.0" y="13.5" stroke="none" data-name="ContactState">+type: ContactStateType</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ContactState">+timestamp: Date</text>
+
+</g>
+</g>
+<g transform="translate(15097, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactState">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ContactState">
+
+</g>
+</g>
+</g>
+<g data-name="Queue">
+<g fill="lightblue" stroke="#33322E" data-name="Queue">
+<rect x="15348.0" y="439.0" height="100.0" width="165.0" data-name="Queue"></rect>
+<path d="M15348.0 470.0 L15513.0 470.0" fill="none" data-name="Queue"></path>
+<path d="M15348.0 531.0 L15513.0 531.0" fill="none" data-name="Queue"></path>
+</g>
+<g transform="translate(15348, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Queue">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Queue">
+<a id="index.ts.Queue" xlink:href="index.ts"><text x="74.5" y="13.5" stroke="none" text-anchor="middle" data-name="Queue">Queue</text></a>
+
+</g>
+</g>
+<g transform="translate(15348, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Queue">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Queue">
+<text x="0.0" y="13.5" stroke="none" data-name="Queue">+name: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Queue">+queueARN: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Queue">+queueId: string</text>
+
+</g>
+</g>
+<g transform="translate(15348, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Queue">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Queue">
+
+</g>
+</g>
+</g>
+<g data-name="CapabilitiesDictionary">
+<g fill="lightblue" stroke="#33322E" data-name="CapabilitiesDictionary">
+<rect x="15553.0" y="465.5" height="47.0" width="187.0" data-name="CapabilitiesDictionary"></rect>
+<path d="M15553.0 496.5 L15740.0 496.5" fill="none" data-name="CapabilitiesDictionary"></path>
+<path d="M15553.0 504.5 L15740.0 504.5" fill="none" data-name="CapabilitiesDictionary"></path>
+</g>
+<g transform="translate(15553, 465.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CapabilitiesDictionary">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CapabilitiesDictionary">
+<a id="index.ts.CapabilitiesDictionary" xlink:href="index.ts"><text x="85.5" y="13.5" stroke="none" text-anchor="middle" data-name="CapabilitiesDictionary">CapabilitiesDictionary</text></a>
+
+</g>
+</g>
+<g transform="translate(15553, 496.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CapabilitiesDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CapabilitiesDictionary">
+
+</g>
+</g>
+<g transform="translate(15553, 504.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CapabilitiesDictionary">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CapabilitiesDictionary">
+
+</g>
+</g>
+</g>
+<g data-name="ConnectionState">
+<g fill="lightblue" stroke="#33322E" data-name="ConnectionState">
+<rect x="15780.0" y="446.5" height="85.0" width="240.0" data-name="ConnectionState"></rect>
+<path d="M15780.0 477.5 L16020.0 477.5" fill="none" data-name="ConnectionState"></path>
+<path d="M15780.0 523.5 L16020.0 523.5" fill="none" data-name="ConnectionState"></path>
+</g>
+<g transform="translate(15780, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ConnectionState">
+<a id="index.ts.ConnectionState" xlink:href="index.ts"><text x="112.0" y="13.5" stroke="none" text-anchor="middle" data-name="ConnectionState">ConnectionState</text></a>
+
+</g>
+</g>
+<g transform="translate(15780, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionState">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ConnectionState">
+<text x="0.0" y="13.5" stroke="none" data-name="ConnectionState">+timestamp: Date</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ConnectionState">+type: ConnectionStateType</text>
+
+</g>
+</g>
+<g transform="translate(15780, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionState">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ConnectionState">
+
+</g>
+</g>
+</g>
+<g data-name="ConnectionToken">
+<g fill="lightblue" stroke="#33322E" data-name="ConnectionToken">
+<rect x="16060.0" y="439.0" height="100.0" width="382.0" data-name="ConnectionToken"></rect>
+<path d="M16060.0 470.0 L16442.0 470.0" fill="none" data-name="ConnectionToken"></path>
+<path d="M16060.0 531.0 L16442.0 531.0" fill="none" data-name="ConnectionToken"></path>
+</g>
+<g transform="translate(16060, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionToken">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ConnectionToken">
+<a id="index.ts.ConnectionToken" xlink:href="index.ts"><text x="183.0" y="13.5" stroke="none" text-anchor="middle" data-name="ConnectionToken">ConnectionToken</text></a>
+
+</g>
+</g>
+<g transform="translate(16060, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionToken">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ConnectionToken">
+<text x="0.0" y="13.5" stroke="none" data-name="ConnectionToken">+chatTokenTransport: { readonly expiry: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ConnectionToken">readonly participantToken: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ConnectionToken">}</text>
+
+</g>
+</g>
+<g transform="translate(16060, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionToken">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ConnectionToken">
+
+</g>
+</g>
+</g>
+<g data-name="VoiceMediaInfo">
+<g fill="lightblue" stroke="#33322E" data-name="VoiceMediaInfo">
+<rect x="16482.0" y="424.0" height="130.0" width="268.0" data-name="VoiceMediaInfo"></rect>
+<path d="M16482.0 455.0 L16750.0 455.0" fill="none" data-name="VoiceMediaInfo"></path>
+<path d="M16482.0 546.0 L16750.0 546.0" fill="none" data-name="VoiceMediaInfo"></path>
+</g>
+<g transform="translate(16482, 424)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VoiceMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="VoiceMediaInfo">
+<a id="index.ts.VoiceMediaInfo" xlink:href="index.ts"><text x="126.0" y="13.5" stroke="none" text-anchor="middle" data-name="VoiceMediaInfo">VoiceMediaInfo</text></a>
+
+</g>
+</g>
+<g transform="translate(16482, 455)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VoiceMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="VoiceMediaInfo">
+<text x="0.0" y="13.5" stroke="none" data-name="VoiceMediaInfo">+autoAccept: boolean</text>
+<text x="0.0" y="28.5" stroke="none" data-name="VoiceMediaInfo">+callConfigJson: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="VoiceMediaInfo">+callContextToken: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="VoiceMediaInfo">+callType: SoftphoneCallType</text>
+<text x="0.0" y="73.5" stroke="none" data-name="VoiceMediaInfo">+mediaLegContextToken: string</text>
+
+</g>
+</g>
+<g transform="translate(16482, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VoiceMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" data-name="VoiceMediaInfo">
+
+</g>
+</g>
+</g>
+<g data-name="ChatMediaInfo">
+<g fill="lightblue" stroke="#33322E" data-name="ChatMediaInfo">
+<rect x="16790.0" y="394.0" height="190.0" width="465.0" data-name="ChatMediaInfo"></rect>
+<path d="M16790.0 425.0 L17255.0 425.0" fill="none" data-name="ChatMediaInfo"></path>
+<path d="M16790.0 576.0 L17255.0 576.0" fill="none" data-name="ChatMediaInfo"></path>
+</g>
+<g transform="translate(16790, 394)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChatMediaInfo">
+<a id="index.ts.ChatMediaInfo" xlink:href="index.ts"><text x="224.5" y="13.5" stroke="none" text-anchor="middle" data-name="ChatMediaInfo">ChatMediaInfo</text></a>
+
+</g>
+</g>
+<g transform="translate(16790, 425)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChatMediaInfo">
+<text x="0.0" y="13.5" stroke="none" data-name="ChatMediaInfo">+contactId: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChatMediaInfo">+getConnectionToken: () =&gt; Promise&lt;ConnectionToken&gt;</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChatMediaInfo">+initialContactId: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ChatMediaInfo">+originalInfo: { readonly chatAutoAccept: boolean</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ChatMediaInfo">readonly connectionData: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ChatMediaInfo">readonly customerName: string | null</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ChatMediaInfo">}</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ChatMediaInfo">+participantId: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ChatMediaInfo">+participantToken: string</text>
+
+</g>
+</g>
+<g transform="translate(16790, 576)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChatMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ChatMediaInfo">
+
+</g>
+</g>
+</g>
+<g data-name="TaskMediaInfo">
+<g fill="lightblue" stroke="#33322E" data-name="TaskMediaInfo">
+<rect x="17295.0" y="446.5" height="85.0" width="197.0" data-name="TaskMediaInfo"></rect>
+<path d="M17295.0 477.5 L17492.0 477.5" fill="none" data-name="TaskMediaInfo"></path>
+<path d="M17295.0 523.5 L17492.0 523.5" fill="none" data-name="TaskMediaInfo"></path>
+</g>
+<g transform="translate(17295, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="TaskMediaInfo">
+<a id="index.ts.TaskMediaInfo" xlink:href="index.ts"><text x="90.5" y="13.5" stroke="none" text-anchor="middle" data-name="TaskMediaInfo">TaskMediaInfo</text></a>
+
+</g>
+</g>
+<g transform="translate(17295, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="TaskMediaInfo">
+<text x="0.0" y="13.5" stroke="none" data-name="TaskMediaInfo">+contactId: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="TaskMediaInfo">+initialContactId: string</text>
+
+</g>
+</g>
+<g transform="translate(17295, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="TaskMediaInfo">
+<g transform="translate(8, 8)" fill="#33322E" data-name="TaskMediaInfo">
+
+</g>
+</g>
+</g>
+<g data-name="MonitorInfo">
+<g fill="lightblue" stroke="#33322E" data-name="MonitorInfo">
+<rect x="17532.0" y="439.0" height="100.0" width="199.0" data-name="MonitorInfo"></rect>
+<path d="M17532.0 470.0 L17731.0 470.0" fill="none" data-name="MonitorInfo"></path>
+<path d="M17532.0 531.0 L17731.0 531.0" fill="none" data-name="MonitorInfo"></path>
+</g>
+<g transform="translate(17532, 439)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MonitorInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MonitorInfo">
+<a id="index.ts.MonitorInfo" xlink:href="index.ts"><text x="91.5" y="13.5" stroke="none" text-anchor="middle" data-name="MonitorInfo">MonitorInfo</text></a>
+
+</g>
+</g>
+<g transform="translate(17532, 470)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MonitorInfo">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MonitorInfo">
+<text x="0.0" y="13.5" stroke="none" data-name="MonitorInfo">+agentName: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MonitorInfo">+customerName: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="MonitorInfo">+joinTime: Date</text>
+
+</g>
+</g>
+<g transform="translate(17532, 531)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MonitorInfo">
+<g transform="translate(8, 8)" fill="#33322E" data-name="MonitorInfo">
+
+</g>
+</g>
+</g>
+<g data-name="Logger">
+<g fill="lightblue" stroke="#33322E" data-name="Logger">
+<rect x="17771.0" y="409.0" height="160.0" width="188.0" data-name="Logger"></rect>
+<path d="M17771.0 440.0 L17959.0 440.0" fill="none" data-name="Logger"></path>
+<path d="M17771.0 448.0 L17959.0 448.0" fill="none" data-name="Logger"></path>
+</g>
+<g transform="translate(17771, 409)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Logger">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Logger">
+<a id="index.ts.Logger" xlink:href="index.ts"><text x="86.0" y="13.5" stroke="none" text-anchor="middle" data-name="Logger">Logger</text></a>
+
+</g>
+</g>
+<g transform="translate(17771, 440)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Logger">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Logger">
+
+</g>
+</g>
+<g transform="translate(17771, 448)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Logger">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Logger">
+<text x="0.0" y="13.5" stroke="none" data-name="Logger">+debug(): LogEntry</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Logger">+info(): LogEntry</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Logger">+warn(): LogEntry</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Logger">+error(): LogEntry</text>
+<text x="0.0" y="73.5" stroke="none" data-name="Logger">+download(): void</text>
+<text x="0.0" y="88.5" stroke="none" data-name="Logger">+setLogLevel(): void</text>
+<text x="0.0" y="103.5" stroke="none" data-name="Logger">+setEchoLevel(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="LogEntry">
+<g fill="lightblue" stroke="#33322E" data-name="LogEntry">
+<rect x="17999.0" y="446.5" height="85.0" width="228.0" data-name="LogEntry"></rect>
+<path d="M17999.0 477.5 L18227.0 477.5" fill="none" data-name="LogEntry"></path>
+<path d="M17999.0 485.5 L18227.0 485.5" fill="none" data-name="LogEntry"></path>
+</g>
+<g transform="translate(17999, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LogEntry">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="LogEntry">
+<a id="index.ts.LogEntry" xlink:href="index.ts"><text x="106.0" y="13.5" stroke="none" text-anchor="middle" data-name="LogEntry">LogEntry</text></a>
+
+</g>
+</g>
+<g transform="translate(17999, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LogEntry">
+<g transform="translate(8, 8)" fill="#33322E" data-name="LogEntry">
+
+</g>
+</g>
+<g transform="translate(17999, 485.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LogEntry">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="LogEntry">
+<text x="0.0" y="13.5" stroke="none" data-name="LogEntry">+withException(): LogEntry</text>
+<text x="0.0" y="28.5" stroke="none" data-name="LogEntry">+withObject(): LogEntry</text>
+
+</g>
+</g>
+</g>
+<g data-name="EventType">
+<g fill="lightgreen" stroke="#33322E" data-name="EventType">
+<rect x="18267.0" y="165.5" height="647.0" width="377.0" data-name="EventType"></rect>
+<path d="M18267.0 196.5 L18644.0 196.5" fill="none" data-name="EventType"></path>
+</g>
+<g transform="translate(18267, 165.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="EventType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="EventType">
+<a id="index.ts.EventType" xlink:href="index.ts"><text x="180.5" y="13.5" stroke="none" text-anchor="middle" data-name="EventType">EventType</text></a>
+
+</g>
+</g>
+<g transform="translate(18267, 196.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="EventType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="EventType">
+<text x="0.0" y="13.5" stroke="none" data-name="EventType">ACKNOWLEDGE</text>
+<text x="0.0" y="28.5" stroke="none" data-name="EventType">ACK_TIMEOUT</text>
+<text x="0.0" y="43.5" stroke="none" data-name="EventType">INIT</text>
+<text x="0.0" y="58.5" stroke="none" data-name="EventType">API_REQUEST</text>
+<text x="0.0" y="73.5" stroke="none" data-name="EventType">API_RESPONSE</text>
+<text x="0.0" y="88.5" stroke="none" data-name="EventType">AUTH_FAIL</text>
+<text x="0.0" y="103.5" stroke="none" data-name="EventType">ACCESS_DENIED</text>
+<text x="0.0" y="118.5" stroke="none" data-name="EventType">CLOSE</text>
+<text x="0.0" y="133.5" stroke="none" data-name="EventType">CONFIGURE</text>
+<text x="0.0" y="148.5" stroke="none" data-name="EventType">LOG</text>
+<text x="0.0" y="163.5" stroke="none" data-name="EventType">MASTER_REQUEST</text>
+<text x="0.0" y="178.5" stroke="none" data-name="EventType">MASTER_RESPONSE</text>
+<text x="0.0" y="193.5" stroke="none" data-name="EventType">SYNCHRONIZE</text>
+<text x="0.0" y="208.5" stroke="none" data-name="EventType">TERMINATE</text>
+<text x="0.0" y="223.5" stroke="none" data-name="EventType">TERMINATED</text>
+<text x="0.0" y="238.5" stroke="none" data-name="EventType">SEND_LOGS</text>
+<text x="0.0" y="253.5" stroke="none" data-name="EventType">RELOAD_AGENT_CONFIGURATION</text>
+<text x="0.0" y="268.5" stroke="none" data-name="EventType">BROADCAST</text>
+<text x="0.0" y="283.5" stroke="none" data-name="EventType">API_METRIC</text>
+<text x="0.0" y="298.5" stroke="none" data-name="EventType">CLIENT_METRIC</text>
+<text x="0.0" y="313.5" stroke="none" data-name="EventType">SOFTPHONE_STATS</text>
+<text x="0.0" y="328.5" stroke="none" data-name="EventType">SOFTPHONE_REPORT</text>
+<text x="0.0" y="343.5" stroke="none" data-name="EventType">CLIENT_SIDE_LOGS</text>
+<text x="0.0" y="358.5" stroke="none" data-name="EventType">SERVER_BOUND_INTERNAL_LOG</text>
+<text x="0.0" y="373.5" stroke="none" data-name="EventType">MUTE</text>
+<text x="0.0" y="388.5" stroke="none" data-name="EventType">IFRAME_STYLE</text>
+<text x="0.0" y="403.5" stroke="none" data-name="EventType">IFRAME_RETRIES_EXHAUSTED</text>
+<text x="0.0" y="418.5" stroke="none" data-name="EventType">UPDATE_CONNECTED_CCPS</text>
+<text x="0.0" y="433.5" stroke="none" data-name="EventType">OUTER_CONTEXT_INFO</text>
+<text x="0.0" y="448.5" stroke="none" data-name="EventType">MEDIA_DEVICE_REQUEST</text>
+<text x="0.0" y="463.5" stroke="none" data-name="EventType">MEDIA_DEVICE_RESPONSE</text>
+<text x="0.0" y="478.5" stroke="none" data-name="EventType">TAB_ID</text>
+<text x="0.0" y="493.5" stroke="none" data-name="EventType">AUTHORIZE_SUCCESS</text>
+<text x="0.0" y="508.5" stroke="none" data-name="EventType">AUTHORIZE_RETRIES_EXHAUSTED</text>
+<text x="0.0" y="523.5" stroke="none" data-name="EventType">CTI_AUTHORIZE_RETRIES_EXHAUSTED</text>
+<text x="0.0" y="538.5" stroke="none" data-name="EventType">CLICK_STREAM_DATA</text>
+<text x="0.0" y="553.5" stroke="none" data-name="EventType">SET_QUICK_GET_AGENT_SNAPSHOT_FLAG</text>
+<text x="0.0" y="568.5" stroke="none" data-name="EventType">API_PROXY</text>
+<text x="0.0" y="583.5" stroke="none" data-name="EventType">API_PROXY_REQUEST</text>
+<text x="0.0" y="598.5" stroke="none" data-name="EventType">API_PROXY_RESPONSE</text>
+
+</g>
+</g>
+</g>
+<g data-name="AgentStateType">
+<g fill="lightgreen" stroke="#33322E" data-name="AgentStateType">
+<rect x="18684.0" y="435.5" height="107.0" width="151.0" data-name="AgentStateType"></rect>
+<path d="M18684.0 466.5 L18835.0 466.5" fill="none" data-name="AgentStateType"></path>
+</g>
+<g transform="translate(18684, 435.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentStateType">
+<a id="index.ts.AgentStateType" xlink:href="index.ts"><text x="67.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentStateType">AgentStateType</text></a>
+
+</g>
+</g>
+<g transform="translate(18684, 466.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentStateType">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentStateType">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentStateType">ROUTABLE</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentStateType">NOT_ROUTABLE</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentStateType">OFFLINE</text>
+
+</g>
+</g>
+</g>
+<g data-name="AgentAvailStates">
+<g fill="lightgreen" stroke="#33322E" data-name="AgentAvailStates">
+<rect x="18875.0" y="405.5" height="167.0" width="194.0" data-name="AgentAvailStates"></rect>
+<path d="M18875.0 436.5 L19069.0 436.5" fill="none" data-name="AgentAvailStates"></path>
+</g>
+<g transform="translate(18875, 405.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentAvailStates">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentAvailStates">
+<a id="index.ts.AgentAvailStates" xlink:href="index.ts"><text x="89.0" y="13.5" stroke="none" text-anchor="middle" data-name="AgentAvailStates">AgentAvailStates</text></a>
+
+</g>
+</g>
+<g transform="translate(18875, 436.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentAvailStates">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentAvailStates">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentAvailStates">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentAvailStates">BUSY</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentAvailStates">AFTER_CALL_WORK</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentAvailStates">CALLING_CUSTOMER</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AgentAvailStates">DIALING</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AgentAvailStates">JOINING</text>
+<text x="0.0" y="103.5" stroke="none" data-name="AgentAvailStates">PENDING_AVAILABLE</text>
+<text x="0.0" y="118.5" stroke="none" data-name="AgentAvailStates">PENDING_BUSY</text>
+
+</g>
+</g>
+</g>
+<g data-name="AgentErrorStates">
+<g fill="lightgreen" stroke="#33322E" data-name="AgentErrorStates">
+<rect x="19109.0" y="368.0" height="242.0" width="325.0" data-name="AgentErrorStates"></rect>
+<path d="M19109.0 399.0 L19434.0 399.0" fill="none" data-name="AgentErrorStates"></path>
+</g>
+<g transform="translate(19109, 368)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentErrorStates">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentErrorStates">
+<a id="index.ts.AgentErrorStates" xlink:href="index.ts"><text x="154.5" y="13.5" stroke="none" text-anchor="middle" data-name="AgentErrorStates">AgentErrorStates</text></a>
+
+</g>
+</g>
+<g transform="translate(19109, 399)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentErrorStates">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentErrorStates">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentErrorStates">ERROR</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentErrorStates">AGENT_HUNG_UP</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentErrorStates">BAD_ADDRESS_AGENT</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentErrorStates">BAD_ADDRESS_CUSTOMER</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AgentErrorStates">DEFAULT</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AgentErrorStates">FAILED_CONNECT_AGENT</text>
+<text x="0.0" y="103.5" stroke="none" data-name="AgentErrorStates">FAILED_CONNECT_CUSTOMER</text>
+<text x="0.0" y="118.5" stroke="none" data-name="AgentErrorStates">LINE_ENGAGED_AGENT</text>
+<text x="0.0" y="133.5" stroke="none" data-name="AgentErrorStates">LINE_ENGAGED_CUSTOMER</text>
+<text x="0.0" y="148.5" stroke="none" data-name="AgentErrorStates">MISSED_CALL_AGENT</text>
+<text x="0.0" y="163.5" stroke="none" data-name="AgentErrorStates">MISSED_CALL_CUSTOMER</text>
+<text x="0.0" y="178.5" stroke="none" data-name="AgentErrorStates">MULTIPLE_CCP_WINDOWS</text>
+<text x="0.0" y="193.5" stroke="none" data-name="AgentErrorStates">REALTIME_COMMUNICATION_ERROR</text>
+
+</g>
+</g>
+</g>
+<g data-name="AgentEvents">
+<g fill="lightgreen" stroke="#33322E" data-name="AgentEvents">
+<rect x="19474.0" y="338.0" height="302.0" width="318.0" data-name="AgentEvents"></rect>
+<path d="M19474.0 369.0 L19792.0 369.0" fill="none" data-name="AgentEvents"></path>
+</g>
+<g transform="translate(19474, 338)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AgentEvents">
+<a id="index.ts.AgentEvents" xlink:href="index.ts"><text x="151.0" y="13.5" stroke="none" text-anchor="middle" data-name="AgentEvents">AgentEvents</text></a>
+
+</g>
+</g>
+<g transform="translate(19474, 369)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AgentEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AgentEvents">
+<text x="0.0" y="13.5" stroke="none" data-name="AgentEvents">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AgentEvents">UPDATE</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AgentEvents">REFRESH</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AgentEvents">ROUTABLE</text>
+<text x="0.0" y="73.5" stroke="none" data-name="AgentEvents">NOT_ROUTABLE</text>
+<text x="0.0" y="88.5" stroke="none" data-name="AgentEvents">PENDING</text>
+<text x="0.0" y="103.5" stroke="none" data-name="AgentEvents">CONTACT_PENDING</text>
+<text x="0.0" y="118.5" stroke="none" data-name="AgentEvents">OFFLINE</text>
+<text x="0.0" y="133.5" stroke="none" data-name="AgentEvents">ERROR</text>
+<text x="0.0" y="148.5" stroke="none" data-name="AgentEvents">SOFTPHONE_ERROR</text>
+<text x="0.0" y="163.5" stroke="none" data-name="AgentEvents">WEBSOCKET_CONNECTION_LOST</text>
+<text x="0.0" y="178.5" stroke="none" data-name="AgentEvents">WEBSOCKET_CONNECTION_GAINED</text>
+<text x="0.0" y="193.5" stroke="none" data-name="AgentEvents">STATE_CHANGE</text>
+<text x="0.0" y="208.5" stroke="none" data-name="AgentEvents">ACW</text>
+<text x="0.0" y="223.5" stroke="none" data-name="AgentEvents">MUTE_TOGGLE</text>
+<text x="0.0" y="238.5" stroke="none" data-name="AgentEvents">LOCAL_MEDIA_STREAM_CREATED</text>
+<text x="0.0" y="253.5" stroke="none" data-name="AgentEvents">ENQUEUED_NEXT_STATE</text>
+
+</g>
+</g>
+</g>
+<g data-name="EndpointType">
+<g fill="lightgreen" stroke="#33322E" data-name="EndpointType">
+<rect x="19832.0" y="443.0" height="92.0" width="157.0" data-name="EndpointType"></rect>
+<path d="M19832.0 474.0 L19989.0 474.0" fill="none" data-name="EndpointType"></path>
+</g>
+<g transform="translate(19832, 443)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="EndpointType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="EndpointType">
+<a id="index.ts.EndpointType" xlink:href="index.ts"><text x="70.5" y="13.5" stroke="none" text-anchor="middle" data-name="EndpointType">EndpointType</text></a>
+
+</g>
+</g>
+<g transform="translate(19832, 474)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="EndpointType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="EndpointType">
+<text x="0.0" y="13.5" stroke="none" data-name="EndpointType">PHONE_NUMBER</text>
+<text x="0.0" y="28.5" stroke="none" data-name="EndpointType">AGENT</text>
+<text x="0.0" y="43.5" stroke="none" data-name="EndpointType">QUEUE</text>
+
+</g>
+</g>
+</g>
+<g data-name="ReferenceType">
+<g fill="lightgreen" stroke="#33322E" data-name="ReferenceType">
+<rect x="20029.0" y="458.0" height="62.0" width="137.0" data-name="ReferenceType"></rect>
+<path d="M20029.0 489.0 L20166.0 489.0" fill="none" data-name="ReferenceType"></path>
+</g>
+<g transform="translate(20029, 458)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ReferenceType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ReferenceType">
+<a id="index.ts.ReferenceType" xlink:href="index.ts"><text x="60.5" y="13.5" stroke="none" text-anchor="middle" data-name="ReferenceType">ReferenceType</text></a>
+
+</g>
+</g>
+<g transform="translate(20029, 489)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ReferenceType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ReferenceType">
+<text x="0.0" y="13.5" stroke="none" data-name="ReferenceType">URL</text>
+
+</g>
+</g>
+</g>
+<g data-name="ConnectionType">
+<g fill="lightgreen" stroke="#33322E" data-name="ConnectionType">
+<rect x="20206.0" y="435.5" height="107.0" width="145.0" data-name="ConnectionType"></rect>
+<path d="M20206.0 466.5 L20351.0 466.5" fill="none" data-name="ConnectionType"></path>
+</g>
+<g transform="translate(20206, 435.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ConnectionType">
+<a id="index.ts.ConnectionType" xlink:href="index.ts"><text x="64.5" y="13.5" stroke="none" text-anchor="middle" data-name="ConnectionType">ConnectionType</text></a>
+
+</g>
+</g>
+<g transform="translate(20206, 466.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ConnectionType">
+<text x="0.0" y="13.5" stroke="none" data-name="ConnectionType">AGENT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ConnectionType">INBOUND</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ConnectionType">OUTBOUND</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ConnectionType">MONITORING</text>
+
+</g>
+</g>
+</g>
+<g data-name="ConnectionStateType">
+<g fill="lightgreen" stroke="#33322E" data-name="ConnectionStateType">
+<rect x="20391.0" y="413.0" height="152.0" width="186.0" data-name="ConnectionStateType"></rect>
+<path d="M20391.0 444.0 L20577.0 444.0" fill="none" data-name="ConnectionStateType"></path>
+</g>
+<g transform="translate(20391, 413)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ConnectionStateType">
+<a id="index.ts.ConnectionStateType" xlink:href="index.ts"><text x="85.0" y="13.5" stroke="none" text-anchor="middle" data-name="ConnectionStateType">ConnectionStateType</text></a>
+
+</g>
+</g>
+<g transform="translate(20391, 444)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ConnectionStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ConnectionStateType">
+<text x="0.0" y="13.5" stroke="none" data-name="ConnectionStateType">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ConnectionStateType">CONNECTING</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ConnectionStateType">CONNECTED</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ConnectionStateType">HOLD</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ConnectionStateType">DISCONNECTED</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ConnectionStateType">SILENT_MONITOR</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ConnectionStateType">BARGE</text>
+
+</g>
+</g>
+</g>
+<g data-name="ContactEvents">
+<g fill="lightgreen" stroke="#33322E" data-name="ContactEvents">
+<rect x="20617.0" y="360.5" height="257.0" width="131.0" data-name="ContactEvents"></rect>
+<path d="M20617.0 391.5 L20748.0 391.5" fill="none" data-name="ContactEvents"></path>
+</g>
+<g transform="translate(20617, 360.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ContactEvents">
+<a id="index.ts.ContactEvents" xlink:href="index.ts"><text x="57.5" y="13.5" stroke="none" text-anchor="middle" data-name="ContactEvents">ContactEvents</text></a>
+
+</g>
+</g>
+<g transform="translate(20617, 391.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactEvents">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ContactEvents">
+<text x="0.0" y="13.5" stroke="none" data-name="ContactEvents">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ContactEvents">REFRESH</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ContactEvents">DESTROYED</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ContactEvents">INCOMING</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ContactEvents">PENDING</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ContactEvents">CONNECTING</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ContactEvents">CONNECTED</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ContactEvents">MISSED</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ContactEvents">ACW</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ContactEvents">VIEW</text>
+<text x="0.0" y="163.5" stroke="none" data-name="ContactEvents">ENDED</text>
+<text x="0.0" y="178.5" stroke="none" data-name="ContactEvents">ERROR</text>
+<text x="0.0" y="193.5" stroke="none" data-name="ContactEvents">ACCEPTED</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ContactEvents">PAUSED</text>
+
+</g>
+</g>
+</g>
+<g data-name="ContactStateType">
+<g fill="lightgreen" stroke="#33322E" data-name="ContactStateType">
+<rect x="20788.0" y="390.5" height="197.0" width="157.0" data-name="ContactStateType"></rect>
+<path d="M20788.0 421.5 L20945.0 421.5" fill="none" data-name="ContactStateType"></path>
+</g>
+<g transform="translate(20788, 390.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ContactStateType">
+<a id="index.ts.ContactStateType" xlink:href="index.ts"><text x="70.5" y="13.5" stroke="none" text-anchor="middle" data-name="ContactStateType">ContactStateType</text></a>
+
+</g>
+</g>
+<g transform="translate(20788, 421.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactStateType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ContactStateType">
+<text x="0.0" y="13.5" stroke="none" data-name="ContactStateType">INIT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ContactStateType">INCOMING</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ContactStateType">PENDING</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ContactStateType">CONNECTING</text>
+<text x="0.0" y="73.5" stroke="none" data-name="ContactStateType">CONNECTED</text>
+<text x="0.0" y="88.5" stroke="none" data-name="ContactStateType">MISSED</text>
+<text x="0.0" y="103.5" stroke="none" data-name="ContactStateType">REJECTED</text>
+<text x="0.0" y="118.5" stroke="none" data-name="ContactStateType">ERROR</text>
+<text x="0.0" y="133.5" stroke="none" data-name="ContactStateType">ENDED</text>
+<text x="0.0" y="148.5" stroke="none" data-name="ContactStateType">PAUSED</text>
+
+</g>
+</g>
+</g>
+<g data-name="CONTACT_ACTIVE_STATES">
+<g fill="lightgreen" stroke="#33322E" data-name="CONTACT_ACTIVE_STATES">
+<rect x="20985.0" y="435.5" height="107.0" width="240.0" data-name="CONTACT_ACTIVE_STATES"></rect>
+<path d="M20985.0 466.5 L21225.0 466.5" fill="none" data-name="CONTACT_ACTIVE_STATES"></path>
+</g>
+<g transform="translate(20985, 435.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CONTACT_ACTIVE_STATES">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CONTACT_ACTIVE_STATES">
+<a id="index.ts.CONTACT_ACTIVE_STATES" xlink:href="index.ts"><text x="112.0" y="13.5" stroke="none" text-anchor="middle" data-name="CONTACT_ACTIVE_STATES">CONTACT_ACTIVE_STATES</text></a>
+
+</g>
+</g>
+<g transform="translate(20985, 466.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CONTACT_ACTIVE_STATES">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CONTACT_ACTIVE_STATES">
+<text x="0.0" y="13.5" stroke="none" data-name="CONTACT_ACTIVE_STATES">INCOMING</text>
+<text x="0.0" y="28.5" stroke="none" data-name="CONTACT_ACTIVE_STATES">PENDING</text>
+<text x="0.0" y="43.5" stroke="none" data-name="CONTACT_ACTIVE_STATES">CONNECTING</text>
+<text x="0.0" y="58.5" stroke="none" data-name="CONTACT_ACTIVE_STATES">CONNECTED</text>
+
+</g>
+</g>
+</g>
+<g data-name="ContactType">
+<g fill="lightgreen" stroke="#33322E" data-name="ContactType">
+<rect x="21265.0" y="435.5" height="107.0" width="173.0" data-name="ContactType"></rect>
+<path d="M21265.0 466.5 L21438.0 466.5" fill="none" data-name="ContactType"></path>
+</g>
+<g transform="translate(21265, 435.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ContactType">
+<a id="index.ts.ContactType" xlink:href="index.ts"><text x="78.5" y="13.5" stroke="none" text-anchor="middle" data-name="ContactType">ContactType</text></a>
+
+</g>
+</g>
+<g transform="translate(21265, 466.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ContactType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ContactType">
+<text x="0.0" y="13.5" stroke="none" data-name="ContactType">VOICE</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ContactType">QUEUE_CALLBACK</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ContactType">CHAT</text>
+<text x="0.0" y="58.5" stroke="none" data-name="ContactType">TASK</text>
+
+</g>
+</g>
+</g>
+<g data-name="VDIPlatformType">
+<g fill="lightgreen" stroke="#33322E" data-name="VDIPlatformType">
+<rect x="21478.0" y="458.0" height="62.0" width="148.0" data-name="VDIPlatformType"></rect>
+<path d="M21478.0 489.0 L21626.0 489.0" fill="none" data-name="VDIPlatformType"></path>
+</g>
+<g transform="translate(21478, 458)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VDIPlatformType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="VDIPlatformType">
+<a id="index.ts.VDIPlatformType" xlink:href="index.ts"><text x="66.0" y="13.5" stroke="none" text-anchor="middle" data-name="VDIPlatformType">VDIPlatformType</text></a>
+
+</g>
+</g>
+<g transform="translate(21478, 489)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VDIPlatformType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="VDIPlatformType">
+<text x="0.0" y="13.5" stroke="none" data-name="VDIPlatformType">CITRIX</text>
+
+</g>
+</g>
+</g>
+<g data-name="ChannelType">
+<g fill="lightgreen" stroke="#33322E" data-name="ChannelType">
+<rect x="21666.0" y="443.0" height="92.0" width="121.0" data-name="ChannelType"></rect>
+<path d="M21666.0 474.0 L21787.0 474.0" fill="none" data-name="ChannelType"></path>
+</g>
+<g transform="translate(21666, 443)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChannelType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ChannelType">
+<a id="index.ts.ChannelType" xlink:href="index.ts"><text x="52.5" y="13.5" stroke="none" text-anchor="middle" data-name="ChannelType">ChannelType</text></a>
+
+</g>
+</g>
+<g transform="translate(21666, 474)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ChannelType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ChannelType">
+<text x="0.0" y="13.5" stroke="none" data-name="ChannelType">VOICE</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ChannelType">CHAT</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ChannelType">TASK</text>
+
+</g>
+</g>
+</g>
+<g data-name="MediaType">
+<g fill="lightgreen" stroke="#33322E" data-name="MediaType">
+<rect x="21827.0" y="443.0" height="92.0" width="119.0" data-name="MediaType"></rect>
+<path d="M21827.0 474.0 L21946.0 474.0" fill="none" data-name="MediaType"></path>
+</g>
+<g transform="translate(21827, 443)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MediaType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MediaType">
+<a id="index.ts.MediaType" xlink:href="index.ts"><text x="51.5" y="13.5" stroke="none" text-anchor="middle" data-name="MediaType">MediaType</text></a>
+
+</g>
+</g>
+<g transform="translate(21827, 474)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MediaType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MediaType">
+<text x="0.0" y="13.5" stroke="none" data-name="MediaType">SOFTPHONE</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MediaType">CHAT</text>
+<text x="0.0" y="43.5" stroke="none" data-name="MediaType">TASK</text>
+
+</g>
+</g>
+</g>
+<g data-name="SoftphoneCallType">
+<g fill="lightgreen" stroke="#33322E" data-name="SoftphoneCallType">
+<rect x="21986.0" y="435.5" height="107.0" width="166.0" data-name="SoftphoneCallType"></rect>
+<path d="M21986.0 466.5 L22152.0 466.5" fill="none" data-name="SoftphoneCallType"></path>
+</g>
+<g transform="translate(21986, 435.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneCallType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SoftphoneCallType">
+<a id="index.ts.SoftphoneCallType" xlink:href="index.ts"><text x="75.0" y="13.5" stroke="none" text-anchor="middle" data-name="SoftphoneCallType">SoftphoneCallType</text></a>
+
+</g>
+</g>
+<g transform="translate(21986, 466.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneCallType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SoftphoneCallType">
+<text x="0.0" y="13.5" stroke="none" data-name="SoftphoneCallType">AUDIO_VIDEO</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SoftphoneCallType">VIDEO_ONLY</text>
+<text x="0.0" y="43.5" stroke="none" data-name="SoftphoneCallType">AUDIO_ONLY</text>
+<text x="0.0" y="58.5" stroke="none" data-name="SoftphoneCallType">NONE</text>
+
+</g>
+</g>
+</g>
+<g data-name="SoftphoneErrorTypes">
+<g fill="lightgreen" stroke="#33322E" data-name="SoftphoneErrorTypes">
+<rect x="22192.0" y="398.0" height="182.0" width="325.0" data-name="SoftphoneErrorTypes"></rect>
+<path d="M22192.0 429.0 L22517.0 429.0" fill="none" data-name="SoftphoneErrorTypes"></path>
+</g>
+<g transform="translate(22192, 398)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneErrorTypes">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SoftphoneErrorTypes">
+<a id="index.ts.SoftphoneErrorTypes" xlink:href="index.ts"><text x="154.5" y="13.5" stroke="none" text-anchor="middle" data-name="SoftphoneErrorTypes">SoftphoneErrorTypes</text></a>
+
+</g>
+</g>
+<g transform="translate(22192, 429)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SoftphoneErrorTypes">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SoftphoneErrorTypes">
+<text x="0.0" y="13.5" stroke="none" data-name="SoftphoneErrorTypes">UNSUPPORTED_BROWSER</text>
+<text x="0.0" y="28.5" stroke="none" data-name="SoftphoneErrorTypes">MICROPHONE_NOT_SHARED</text>
+<text x="0.0" y="43.5" stroke="none" data-name="SoftphoneErrorTypes">SIGNALLING_HANDSHAKE_FAILURE</text>
+<text x="0.0" y="58.5" stroke="none" data-name="SoftphoneErrorTypes">SIGNALLING_CONNECTION_FAILURE</text>
+<text x="0.0" y="73.5" stroke="none" data-name="SoftphoneErrorTypes">ICE_COLLECTION_TIMEOUT</text>
+<text x="0.0" y="88.5" stroke="none" data-name="SoftphoneErrorTypes">USER_BUSY_ERROR</text>
+<text x="0.0" y="103.5" stroke="none" data-name="SoftphoneErrorTypes">WEBRTC_ERROR</text>
+<text x="0.0" y="118.5" stroke="none" data-name="SoftphoneErrorTypes">REALTIME_COMMUNICATION_ERROR</text>
+<text x="0.0" y="133.5" stroke="none" data-name="SoftphoneErrorTypes">OTHER</text>
+
+</g>
+</g>
+</g>
+<g data-name="ClickType">
+<g fill="lightgreen" stroke="#33322E" data-name="ClickType">
+<rect x="22557.0" y="443.0" height="92.0" width="93.0" data-name="ClickType"></rect>
+<path d="M22557.0 474.0 L22650.0 474.0" fill="none" data-name="ClickType"></path>
+</g>
+<g transform="translate(22557, 443)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ClickType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ClickType">
+<a id="index.ts.ClickType" xlink:href="index.ts"><text x="38.5" y="13.5" stroke="none" text-anchor="middle" data-name="ClickType">ClickType</text></a>
+
+</g>
+</g>
+<g transform="translate(22557, 474)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ClickType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ClickType">
+<text x="0.0" y="13.5" stroke="none" data-name="ClickType">ACCEPT</text>
+<text x="0.0" y="28.5" stroke="none" data-name="ClickType">REJECT</text>
+<text x="0.0" y="43.5" stroke="none" data-name="ClickType">HANGUP</text>
+
+</g>
+</g>
+</g>
+<g data-name="CTIExceptions">
+<g fill="lightgreen" stroke="#33322E" data-name="CTIExceptions">
+<rect x="22690.0" y="390.5" height="197.0" width="351.0" data-name="CTIExceptions"></rect>
+<path d="M22690.0 421.5 L23041.0 421.5" fill="none" data-name="CTIExceptions"></path>
+</g>
+<g transform="translate(22690, 390.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CTIExceptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CTIExceptions">
+<a id="index.ts.CTIExceptions" xlink:href="index.ts"><text x="167.5" y="13.5" stroke="none" text-anchor="middle" data-name="CTIExceptions">CTIExceptions</text></a>
+
+</g>
+</g>
+<g transform="translate(22690, 421.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CTIExceptions">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CTIExceptions">
+<text x="0.0" y="13.5" stroke="none" data-name="CTIExceptions">ACCESS_DENIED_EXCEPTION</text>
+<text x="0.0" y="28.5" stroke="none" data-name="CTIExceptions">INVALID_STATE_EXCEPTION</text>
+<text x="0.0" y="43.5" stroke="none" data-name="CTIExceptions">BAD_ENDPOINT_EXCEPTION</text>
+<text x="0.0" y="58.5" stroke="none" data-name="CTIExceptions">INVALID_AGENT_ARNEXCEPTION</text>
+<text x="0.0" y="73.5" stroke="none" data-name="CTIExceptions">INVALID_CONFIGURATION_EXCEPTION</text>
+<text x="0.0" y="88.5" stroke="none" data-name="CTIExceptions">INVALID_CONTACT_TYPE_EXCEPTION</text>
+<text x="0.0" y="103.5" stroke="none" data-name="CTIExceptions">PAGINATION_EXCEPTION</text>
+<text x="0.0" y="118.5" stroke="none" data-name="CTIExceptions">REFRESH_TOKEN_EXPIRED_EXCEPTION</text>
+<text x="0.0" y="133.5" stroke="none" data-name="CTIExceptions">SEND_DATA_FAILED_EXCEPTION</text>
+<text x="0.0" y="148.5" stroke="none" data-name="CTIExceptions">UNAUTHORIZED_EXCEPTION</text>
+
+</g>
+</g>
+</g>
+<g data-name="MonitoringMode">
+<g fill="lightgreen" stroke="#33322E" data-name="MonitoringMode">
+<rect x="23081.0" y="450.5" height="77.0" width="164.0" data-name="MonitoringMode"></rect>
+<path d="M23081.0 481.5 L23245.0 481.5" fill="none" data-name="MonitoringMode"></path>
+</g>
+<g transform="translate(23081, 450.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MonitoringMode">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MonitoringMode">
+<a id="index.ts.MonitoringMode" xlink:href="index.ts"><text x="74.0" y="13.5" stroke="none" text-anchor="middle" data-name="MonitoringMode">MonitoringMode</text></a>
+
+</g>
+</g>
+<g transform="translate(23081, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MonitoringMode">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MonitoringMode">
+<text x="0.0" y="13.5" stroke="none" data-name="MonitoringMode">SILENT_MONITOR</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MonitoringMode">BARGE</text>
+
+</g>
+</g>
+</g>
+<g data-name="MasterTopics">
+<g fill="lightgreen" stroke="#33322E" data-name="MasterTopics">
+<rect x="23285.0" y="428.0" height="122.0" width="137.0" data-name="MasterTopics"></rect>
+<path d="M23285.0 459.0 L23422.0 459.0" fill="none" data-name="MasterTopics"></path>
+</g>
+<g transform="translate(23285, 428)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MasterTopics">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MasterTopics">
+<a id="index.ts.MasterTopics" xlink:href="index.ts"><text x="60.5" y="13.5" stroke="none" text-anchor="middle" data-name="MasterTopics">MasterTopics</text></a>
+
+</g>
+</g>
+<g transform="translate(23285, 459)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MasterTopics">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MasterTopics">
+<text x="0.0" y="13.5" stroke="none" data-name="MasterTopics">LOGIN_POPUP</text>
+<text x="0.0" y="28.5" stroke="none" data-name="MasterTopics">SEND_LOGS</text>
+<text x="0.0" y="43.5" stroke="none" data-name="MasterTopics">SOFTPHONE</text>
+<text x="0.0" y="58.5" stroke="none" data-name="MasterTopics">RINGTONE</text>
+<text x="0.0" y="73.5" stroke="none" data-name="MasterTopics">METRICS</text>
+
+</g>
+</g>
+</g>
+<g data-name="VideoCapability">
+<g fill="lightgreen" stroke="#33322E" data-name="VideoCapability">
+<rect x="23462.0" y="458.0" height="62.0" width="139.0" data-name="VideoCapability"></rect>
+<path d="M23462.0 489.0 L23601.0 489.0" fill="none" data-name="VideoCapability"></path>
+</g>
+<g transform="translate(23462, 458)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VideoCapability">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="VideoCapability">
+<a id="index.ts.VideoCapability" xlink:href="index.ts"><text x="61.5" y="13.5" stroke="none" text-anchor="middle" data-name="VideoCapability">VideoCapability</text></a>
+
+</g>
+</g>
+<g transform="translate(23462, 489)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VideoCapability">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="VideoCapability">
+<text x="0.0" y="13.5" stroke="none" data-name="VideoCapability">SEND</text>
+
+</g>
+</g>
+</g>
+<g data-name="LogLevel">
+<g fill="lightgreen" stroke="#33322E" data-name="LogLevel">
+<rect x="23641.0" y="405.5" height="167.0" width="93.0" data-name="LogLevel"></rect>
+<path d="M23641.0 436.5 L23734.0 436.5" fill="none" data-name="LogLevel"></path>
+</g>
+<g transform="translate(23641, 405.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LogLevel">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="LogLevel">
+<a id="index.ts.LogLevel" xlink:href="index.ts"><text x="38.5" y="13.5" stroke="none" text-anchor="middle" data-name="LogLevel">LogLevel</text></a>
+
+</g>
+</g>
+<g transform="translate(23641, 436.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LogLevel">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="LogLevel">
+<text x="0.0" y="13.5" stroke="none" data-name="LogLevel">TEST</text>
+<text x="0.0" y="28.5" stroke="none" data-name="LogLevel">TRACE</text>
+<text x="0.0" y="43.5" stroke="none" data-name="LogLevel">DEBUG</text>
+<text x="0.0" y="58.5" stroke="none" data-name="LogLevel">INFO</text>
+<text x="0.0" y="73.5" stroke="none" data-name="LogLevel">LOG</text>
+<text x="0.0" y="88.5" stroke="none" data-name="LogLevel">WARN</text>
+<text x="0.0" y="103.5" stroke="none" data-name="LogLevel">ERROR</text>
+<text x="0.0" y="118.5" stroke="none" data-name="LogLevel">CRITICAL</text>
+
+</g>
+</g>
+</g>
+<g data-name="StorageAccessCallbackData">
+<g fill="lightgray" stroke="#33322E" data-name="StorageAccessCallbackData">
+<rect x="23774.0" y="431.5" height="115.0" width="280.0" data-name="StorageAccessCallbackData"></rect>
+<path d="M23774.0 462.5 L24054.0 462.5" fill="none" data-name="StorageAccessCallbackData"></path>
+<path d="M23774.0 538.5 L24054.0 538.5" fill="none" data-name="StorageAccessCallbackData"></path>
+</g>
+<g transform="translate(23774, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbackData">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="StorageAccessCallbackData">
+<a id="index.ts.StorageAccessCallbackData" xlink:href="index.ts"><text x="132.0" y="13.5" stroke="none" text-anchor="middle" data-name="StorageAccessCallbackData">StorageAccessCallbackData</text></a>
+
+</g>
+</g>
+<g transform="translate(23774, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbackData">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="StorageAccessCallbackData">
+<text x="0.0" y="13.5" stroke="none" data-name="StorageAccessCallbackData">+data: { [key: string]: any</text>
+<text x="0.0" y="28.5" stroke="none" data-name="StorageAccessCallbackData">hasAccess?: boolean | undefined</text>
+<text x="0.0" y="43.5" stroke="none" data-name="StorageAccessCallbackData">}</text>
+<text x="0.0" y="58.5" stroke="none" data-name="StorageAccessCallbackData">+event: string</text>
+
+</g>
+</g>
+<g transform="translate(23774, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessCallbackData">
+<g transform="translate(8, 8)" fill="#33322E" data-name="StorageAccessCallbackData">
+
+</g>
+</g>
+</g>
+<g data-name="AppData">
+<g fill="lightgray" stroke="#33322E" data-name="AppData">
+<rect x="24094.0" y="431.5" height="115.0" width="259.0" data-name="AppData"></rect>
+<path d="M24094.0 462.5 L24353.0 462.5" fill="none" data-name="AppData"></path>
+<path d="M24094.0 538.5 L24353.0 538.5" fill="none" data-name="AppData"></path>
+</g>
+<g transform="translate(24094, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppData">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppData">
+<a id="index.ts.AppData" xlink:href="index.ts"><text x="121.5" y="13.5" stroke="none" text-anchor="middle" data-name="AppData">AppData</text></a>
+
+</g>
+</g>
+<g transform="translate(24094, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppData">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AppData">
+<text x="0.0" y="13.5" stroke="none" data-name="AppData">+containerDOM: HTMLElement</text>
+<text x="0.0" y="28.5" stroke="none" data-name="AppData">+endpoint: string</text>
+<text x="0.0" y="43.5" stroke="none" data-name="AppData">+style?: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="AppData">+instance?: AppMethods</text>
+
+</g>
+</g>
+<g transform="translate(24094, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppData">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppData">
+
+</g>
+</g>
+</g>
+<g data-name="StorageAccessParameters">
+<g fill="lightgray" stroke="#33322E" data-name="StorageAccessParameters">
+<rect x="24393.0" y="296.5" height="385.0" width="376.0" data-name="StorageAccessParameters"></rect>
+<path d="M24393.0 327.5 L24769.0 327.5" fill="none" data-name="StorageAccessParameters"></path>
+<path d="M24393.0 673.5 L24769.0 673.5" fill="none" data-name="StorageAccessParameters"></path>
+</g>
+<g transform="translate(24393, 296.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessParameters">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="StorageAccessParameters">
+<a id="index.ts.StorageAccessParameters" xlink:href="index.ts"><text x="180.0" y="13.5" stroke="none" text-anchor="middle" data-name="StorageAccessParameters">StorageAccessParameters</text></a>
+
+</g>
+</g>
+<g transform="translate(24393, 327.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessParameters">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="StorageAccessParameters">
+<text x="0.0" y="13.5" stroke="none" data-name="StorageAccessParameters">+mode?: &quot;default&quot; | &quot;custom&quot;</text>
+<text x="0.0" y="28.5" stroke="none" data-name="StorageAccessParameters">+canRequest?: boolean</text>
+<text x="0.0" y="43.5" stroke="none" data-name="StorageAccessParameters">+instanceUrl?: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="StorageAccessParameters">+style?: { &quot;font-family&quot;: string</text>
+<text x="0.0" y="73.5" stroke="none" data-name="StorageAccessParameters">&quot;primary-color&quot;: string</text>
+<text x="0.0" y="88.5" stroke="none" data-name="StorageAccessParameters">&quot;primary-button-hover-color&quot;: string</text>
+<text x="0.0" y="103.5" stroke="none" data-name="StorageAccessParameters">&quot;link-color&quot;: string</text>
+<text x="0.0" y="118.5" stroke="none" data-name="StorageAccessParameters">&quot;banner-box-shadow&quot;: string</text>
+<text x="0.0" y="133.5" stroke="none" data-name="StorageAccessParameters">&quot;banner-margin&quot;: string</text>
+<text x="0.0" y="148.5" stroke="none" data-name="StorageAccessParameters">&quot;border-radius&quot;: string</text>
+<text x="0.0" y="163.5" stroke="none" data-name="StorageAccessParameters">&quot;banner-header-color&quot;: string</text>
+<text x="0.0" y="178.5" stroke="none" data-name="StorageAccessParameters">... 11 more ...</text>
+<text x="0.0" y="193.5" stroke="none" data-name="StorageAccessParameters">&quot;banner-description-font-size&quot;: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="StorageAccessParameters">}</text>
+<text x="0.0" y="223.5" stroke="none" data-name="StorageAccessParameters">+custom?: { hideCCP?: boolean | undefined</text>
+<text x="0.0" y="238.5" stroke="none" data-name="StorageAccessParameters">header?: string | undefined</text>
+<text x="0.0" y="253.5" stroke="none" data-name="StorageAccessParameters">title?: string | undefined</text>
+<text x="0.0" y="268.5" stroke="none" data-name="StorageAccessParameters">accessBannerDescription?: string | undefined</text>
+<text x="0.0" y="283.5" stroke="none" data-name="StorageAccessParameters">denyBannerDescription?: string | undefined</text>
+<text x="0.0" y="298.5" stroke="none" data-name="StorageAccessParameters">... 12 more ...</text>
+<text x="0.0" y="313.5" stroke="none" data-name="StorageAccessParameters">promptBannerButtonText?: string | undefined</text>
+<text x="0.0" y="328.5" stroke="none" data-name="StorageAccessParameters">}</text>
+
+</g>
+</g>
+<g transform="translate(24393, 673.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="StorageAccessParameters">
+<g transform="translate(8, 8)" fill="#33322E" data-name="StorageAccessParameters">
+
+</g>
+</g>
+</g>
+<g data-name="QuickResponseContentsType">
+<g fill="lightgray" stroke="#33322E" data-name="QuickResponseContentsType">
+<rect x="24809.0" y="431.5" height="115.0" width="251.0" data-name="QuickResponseContentsType"></rect>
+<path d="M24809.0 462.5 L25060.0 462.5" fill="none" data-name="QuickResponseContentsType"></path>
+<path d="M24809.0 538.5 L25060.0 538.5" fill="none" data-name="QuickResponseContentsType"></path>
+</g>
+<g transform="translate(24809, 431.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponseContentsType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="QuickResponseContentsType">
+<a id="index.ts.QuickResponseContentsType" xlink:href="index.ts"><text x="117.5" y="13.5" stroke="none" text-anchor="middle" data-name="QuickResponseContentsType">QuickResponseContentsType</text></a>
+
+</g>
+</g>
+<g transform="translate(24809, 462.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponseContentsType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="QuickResponseContentsType">
+<text x="0.0" y="13.5" stroke="none" data-name="QuickResponseContentsType">+plainText: { content: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="QuickResponseContentsType">}</text>
+<text x="0.0" y="43.5" stroke="none" data-name="QuickResponseContentsType">+markdown: { content: string</text>
+<text x="0.0" y="58.5" stroke="none" data-name="QuickResponseContentsType">}</text>
+
+</g>
+</g>
+<g transform="translate(24809, 538.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="QuickResponseContentsType">
+<g transform="translate(8, 8)" fill="#33322E" data-name="QuickResponseContentsType">
+
+</g>
+</g>
+</g>
+<g data-name="GroupingConfigurationType">
+<g fill="lightgray" stroke="#33322E" data-name="GroupingConfigurationType">
+<rect x="25100.0" y="446.5" height="85.0" width="234.0" data-name="GroupingConfigurationType"></rect>
+<path d="M25100.0 477.5 L25334.0 477.5" fill="none" data-name="GroupingConfigurationType"></path>
+<path d="M25100.0 523.5 L25334.0 523.5" fill="none" data-name="GroupingConfigurationType"></path>
+</g>
+<g transform="translate(25100, 446.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GroupingConfigurationType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="GroupingConfigurationType">
+<a id="index.ts.GroupingConfigurationType" xlink:href="index.ts"><text x="109.0" y="13.5" stroke="none" text-anchor="middle" data-name="GroupingConfigurationType">GroupingConfigurationType</text></a>
+
+</g>
+</g>
+<g transform="translate(25100, 477.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GroupingConfigurationType">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="GroupingConfigurationType">
+<text x="0.0" y="13.5" stroke="none" data-name="GroupingConfigurationType">+criteria: string</text>
+<text x="0.0" y="28.5" stroke="none" data-name="GroupingConfigurationType">+values: (string | null)[]</text>
+
+</g>
+</g>
+<g transform="translate(25100, 523.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="GroupingConfigurationType">
+<g transform="translate(8, 8)" fill="#33322E" data-name="GroupingConfigurationType">
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

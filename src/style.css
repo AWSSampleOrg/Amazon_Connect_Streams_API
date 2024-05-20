@@ -1,0 +1,21 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    content: '';
+}
+
+body {
+    margin: 0;
+    line-height: inherit;
+}
+
+
+#app > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
